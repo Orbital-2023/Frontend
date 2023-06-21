@@ -7,18 +7,21 @@ import useMediaQuery from "@/hooks/useMediaQuery"
 import ActionButton from "@/shared/ActionButton"
 
 type Props = {
+  isTopOfPage: boolean;
   selectedPage: SelectedPage;
   setSelectedPage: (value: SelectedPage) => void;
 };
 
-const Navbar = ({selectedPage, setSelectedPage}: Props) => {
+const Navbar = ({ isTopOfPage, selectedPage, setSelectedPage}: Props) => {
   const flexBetween = "flex items-center justify-between";
   const isAboveMediumScreens = useMediaQuery("(min-width: 1060px)");
   const [isMenuToggled, setIsMenuToggled] = useState<boolean>(false);
+  const navbarBackground = isTopOfPage ? "" : "bg-primary-100 drop-shadow";
+
 
   return (
     <nav>
-      <div className={`${flexBetween} fixed top-0 z-30 w-full py-6`}>
+      <div className={`${navbarBackground} ${flexBetween} fixed top-0 z-30 w-full py-6`}>
         <div className={`${flexBetween} mx-auto w-5/6`}>
           <div className={`${flexBetween} w-full gap-16`}>
             {/* LEFT SIDE */}
@@ -48,9 +51,7 @@ const Navbar = ({selectedPage, setSelectedPage}: Props) => {
                     setSelectedPage={setSelectedPage}
                   />
               </div>
-              {/* link the sign up and log in pages to 2 different pages
-                For Sign Up - ask for google account
-                For Log In - just ask for room name & password
+              {/* A universal log in --> ask for room number, password & google details
               */}
               <div className={`${flexBetween} gap-8`}>
                 <ActionButton setSelectedPage={setSelectedPage}>
