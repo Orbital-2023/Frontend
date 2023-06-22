@@ -25,6 +25,7 @@ const Navbar = ({ isTopOfPage, selectedPage, setSelectedPage}: Props) => {
         <div className={`${flexBetween} mx-auto w-5/6`}>
           <div className={`${flexBetween} w-full gap-16`}>
             {/* LEFT SIDE */}
+            {/* Create our own logo & Replace this logo */}
             <img alt="logo" src={Logo} />
             {/* RIGHT SIDE */}
             {isAboveMediumScreens ? (
@@ -37,11 +38,6 @@ const Navbar = ({ isTopOfPage, selectedPage, setSelectedPage}: Props) => {
                   />
                   <Link
                     page="Features"
-                    selectedPage={selectedPage}
-                    setSelectedPage={setSelectedPage}
-                  />
-                  <Link
-                    page="About Us"
                     selectedPage={selectedPage}
                     setSelectedPage={setSelectedPage}
                   />
@@ -89,11 +85,6 @@ const Navbar = ({ isTopOfPage, selectedPage, setSelectedPage}: Props) => {
             />
             <Link
               page="Features"
-              selectedPage={selectedPage}
-              setSelectedPage={setSelectedPage}
-            />
-            <Link
-              page="About Us"
               selectedPage={selectedPage}
               setSelectedPage={setSelectedPage}
             />

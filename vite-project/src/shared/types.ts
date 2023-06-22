@@ -1,11 +1,10 @@
 export enum SelectedPage {
   Home = "home",
   Features = "features",
-  AboutUs = "aboutus",
   JoinUs="joinus",
 }
 
-export interface BenefitType {
+export interface FeatureType {
   icon: JSX.Element;
   title: string;
   description: string;
