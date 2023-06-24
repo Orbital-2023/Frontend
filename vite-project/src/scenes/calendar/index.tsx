@@ -51,10 +51,6 @@ function generateLegend(data: number[]) {
   );
 }
 
-/*
- * Read the blog post here:
- * https://letsbuildui.dev/articles/building-a-heatmap-chart-component
- */
 interface HeatmapProps {
   data: string[];
   xAxisLabels: string[];
