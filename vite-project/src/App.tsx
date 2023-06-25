@@ -1,15 +1,15 @@
-import Navbar from "@/scenes/navbar";
-import { useEffect, useState } from "react";
-import { SelectedPage } from "@/shared/types";
-import Landing from "./Landing";
-import Dashboard from "./Dashboard";
-
-// Format this to another page so that app.tsx can encompass all other pages within the application
+import Landing from "./pages/Landing";
+import Dashboard from "./pages/Dashboard";
+import { Routes, Route } from 'react-router-dom';
 
 function App() {
  return(
-  // <Landing></Landing>
-  <Dashboard></Dashboard>
+  <div className="App">
+    <Routes>
+      <Route path="/" element={<Landing />} />
+      <Route path="dashboard" element={<Dashboard />} />
+    </Routes>
+  </div>
  )
 }
 export default App

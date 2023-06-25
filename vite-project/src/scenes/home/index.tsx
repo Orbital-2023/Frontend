@@ -3,13 +3,14 @@
 import useMediaQuery from "@/hooks/useMediaQuery";
 import { SelectedPage } from "@/shared/types";
 import ActionButton from "@/shared/ActionButton";
-import HomePageText from "@/assets/HomePageText.png";
-import HomePageGraphic from "@/assets/HomePageGraphic.png";
+// import HomePageText from "@/assets/HomePageText.png";
+import HomePageGraphic from "@/assets/businessSuit.png";
+import HomePageText from "@/assets/WhenToMeet.png"
 import SponsorRedBull from "@/assets/SponsorRedBull.png";
 import SponsorForbes from "@/assets/SponsorForbes.png";
 import SponsorFortune from "@/assets/SponsorFortune.png";
-import AnchorLink from "react-anchor-link-smooth-scroll";
 import { motion } from "framer-motion";
+
 
 type Props = {
   setSelectedPage: (value: SelectedPage) => void;
@@ -46,9 +47,9 @@ const Home = ({ setSelectedPage }: Props) => {
             </div>
 
             <p className="mt-8 text-sm">
-              Unrivaled Gym. Unparalleled Training Fitness Classes. World Class
-              Studios to get the Body Shapes That you Dream of.. Get Your Dream
-              Body Now.
+              Unrivaled Planning. Unparalleled Organisation. World Class
+              Calendar to get the Timetable That you Dream of.. Get Your Dream
+              WhenToMeet_NUS Now. WhenToMeet v2.0 integrated with your very own Google Calendar!
             </p>
           </motion.div>
 
@@ -67,13 +68,6 @@ const Home = ({ setSelectedPage }: Props) => {
             <ActionButton setSelectedPage={setSelectedPage}>
               Log In
             </ActionButton>
-            {/* <AnchorLink
-              className="text-sm font-bold text-primary-500 underline hover:text-secondary-500"
-              onClick={() => setSelectedPage(SelectedPage.JoinUs)}
-              href={`#${SelectedPage.JoinUs}`}
-            >
-              <p>Learn More</p>
-            </AnchorLink> */}
           </motion.div>
         </div>
 
@@ -88,7 +82,7 @@ const Home = ({ setSelectedPage }: Props) => {
 
       {/* SPONSORS */}
       {isAboveMediumScreens && (
-        <div className="h-[150px] w-full bg-primary-100 py-10">
+        <div className="mt-10 h-[150px] w-full bg-primary-100 py-10">
           <div className="mx-auto w-5/6">
             <div className="flex w-3/5 items-center justify-between gap-8">
               <img alt="redbull-sponsor" src={SponsorRedBull} />

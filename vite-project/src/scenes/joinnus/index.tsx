@@ -4,8 +4,9 @@
 import { useForm } from "react-hook-form";
 import { SelectedPage } from "@/shared/types";
 import { motion } from "framer-motion";
-import ContactUsPageGraphic from "@/assets/ContactUsPageGraphic.png";
+import ContactUsPageGraphic from "@/assets/contactUsGraphic.png";
 import HText from "@/shared/HText";
+import { Link } from 'react-router-dom';
 
 type Props = {
   setSelectedPage: (value: SelectedPage) => void;
@@ -46,12 +47,10 @@ const JoinUs = ({ setSelectedPage }: Props) => {
           }}
         >
           <HText>
-            <span className="text-primary-500">JOIN NOW</span> TO GET IN SHAPE
+            <span className="mt-10 text-primary-500">JOIN NOW</span> TO GET PLANNING
           </HText>
           <p className="my-5">
-            Congue adipiscing risus commodo placerat. Tellus et in feugiat nisl
-            sapien vel rhoncus. Placerat at in enim pellentesque. Nulla
-            adipiscing leo egestas nisi elit risus sit. Nunc cursus sagittis.
+            Generate your unique Room ID, key in your room password and provide us with your Gmail Account to get started!
           </p>
         </motion.div>
 
@@ -124,13 +123,14 @@ const JoinUs = ({ setSelectedPage }: Props) => {
                   {errors.email.type === "pattern" && "Invalid email address."}
                 </p>
               )}
-
-              <button
-                type="submit"
-                className="mt-5 rounded-lg bg-secondary-500 px-20 py-3 transition duration-500 hover:text-white"
-              >
-                LOGIN
-              </button>
+              <Link to="/dashboard">
+                <button
+                  type="submit"
+                  className="mt-5 rounded-lg bg-secondary-500 px-20 py-3 transition duration-500 hover:text-white"
+                >
+                  LOGIN
+                </button>
+              </Link>
             </form>
           </motion.div>
 

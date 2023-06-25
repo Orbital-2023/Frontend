@@ -1,7 +1,8 @@
-import "./scenes/calendar/calendar.css";
-import Heatmap from "./scenes/calendar/index.tsx";
+import "@/scenes/calendar/calendar.css";
+import Heatmap from "@/scenes/calendar/index.tsx";
 import { useState, useEffect} from "react";
-import googleData from "./scenes/calendar/rawdata/google.json";
+import googleData from "@/scenes/calendar/rawdata/google.json";
+import NavbarCalendar from "@/scenes/calendar/navbar-calendar/navbarCalendar.tsx";
 
 interface Event {
   start: string;
@@ -53,21 +54,16 @@ export default function Dashboard() {
 
   return (
     <>
-      <div className="container">
-        <Heatmap
-          orientation="vertical"
-          data={data}
-          xAxisLabels={dayLabels}
-          yAxisLabels={hourLabels}
-        />
-      </div>
-      <div className="container">
-        <Heatmap
-          orientation="horizontal"
-          data={data}
-          xAxisLabels={dayLabels}
-          yAxisLabels={hourLabels}
-        />
+      <div className="flex flex-col space-y-15">
+        <NavbarCalendar></NavbarCalendar>
+        <div className="container">
+          <Heatmap
+            orientation="vertical"
+            data={data}
+            xAxisLabels={dayLabels}
+            yAxisLabels={hourLabels}
+          />
+        </div>
       </div>
     </>
   );

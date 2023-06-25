@@ -1,16 +1,3 @@
-// change this function to format the start-end timestamp to hourly timestamp
-// function formatDayAndHour(chartData: string[]) {
-//   return chartData.reduce((dates: { [key: string]: string[] }, dateString) => {
-//     const date = new Date(dateString);
-//     const day = DAY_INDEXES[date.getDay()];
-//     const hour = format(date, "haaa");
-
-//     (dates[day] = dates[day] || []).push(hour);
-
-//     return dates;
-//   }, {});
-// }
-
 import { useRef } from "react";
 import { format } from "date-fns";
 import "./calendar.css";
