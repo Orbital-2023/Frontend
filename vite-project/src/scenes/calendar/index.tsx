@@ -1,51 +1,99 @@
 import { useRef } from "react";
-import { format } from "date-fns";
 import "./calendar.css";
 
-const DAY_INDEXES: { [key: number]: string } = {
-  0: "Sun",
-  1: "Mon",
-  2: "Tue",
-  3: "Wed",
-  4: "Thu",
-  5: "Fri",
-  6: "Sat"
-};
-
-interface Event {
+export interface BusySlot {
   start: string;
   end: string;
 }
 
-interface Calendar {
-  busy: Event[];
+export interface CalendarData {
+  busy: BusySlot[];
 }
 
-interface CalendarData {
-  primary: Calendar;
+export interface Calendar {
+  [email: string]: CalendarData;
 }
-function formatDayAndHour(chartData: CalendarData) {
-  const busyEvents = chartData?.primary?.busy;
 
-  return busyEvents.reduce((dates: { [key: string]: string[] }, event: Event) => {
-    const { start, end } = event;
-    const startDate = new Date(start);
-    const endDate = new Date(end);
-    const day = DAY_INDEXES[startDate.getDay()];
+export interface FreeBusyResponse {
+  data: {
+    calendars: Calendar;
+  };
+}
 
-    const hours: string[] = [];
-    const currentTime = new Date(startDate);
+function formatDayAndHour(date: string): string {
+  const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const formattedDate = new Date(date);
+  const day = days[formattedDate.getDay()];
+  const hour = formattedDate.toLocaleTimeString([], { hour: 'numeric', hour12: true });
+  return `${day}: ${hour}`;
+}
 
-    while (currentTime <= endDate) {
-      hours.push(format(currentTime, "haaa"));
-      currentTime.setHours(currentTime.getHours() + 1);
+function compileDatesFromEmails(dataInput: FreeBusyResponse): Record<string, string[]> {
+  const emails = Object.values(dataInput.data.calendars);
+  const busySlots: BusySlot[] = [];
+
+  emails.forEach((email) => {
+    email.busy.forEach((slot) => {
+      busySlots.push(slot);
+    });
+  });
+
+  const uniqueDates: Set<string> = new Set(busySlots.map((slot) => slot.start.split("T")[0]));
+  const dates: Record<string, string[]> = {};
+
+  uniqueDates.forEach((date) => {
+    const formattedDate = formatDayAndHour(date);
+    const day = formattedDate.split(":")[0];
+    const hour = formattedDate.split(":")[1];
+
+    if (!dates[day]) {
+      dates[day] = [];
     }
 
-    (dates[day] = dates[day] || []).push(...hours);
+    dates[day].push(hour.trim());
+  });
 
-    return dates;
-  }, {});
+  return dates; // returns in the format: Mon: ['11am', '12pm', '5pm', '6pm', '7pm', '11pm', '12am']
 }
+
+// function formatDayAndHour(chartData: FreeBusyResponse): string[] {
+//   const emails = Object.values(chartData.data.calendars);
+//   const events: Event[] = [];
+
+//   emails.forEach((email) => {
+//     email.busy.forEach((slot) => {
+//       events.push(slot);
+//     });
+//   });
+
+//   const dates: string[] = busySlots.map((slot) => slot.start.split("T")[0]);
+
+//   return calendars.reduce((dates: { [key: string]: string[] }, calendar: Calendar) => {
+//     const busyEvents = calendar?.busy;
+
+//     if (busyEvents) {
+//       busyEvents.forEach((event: Event) => {
+//         const { start, end } = event;
+//         const startDate = new Date(start);
+//         const endDate = new Date(end);
+//         const day = DAY_INDEXES[startDate.getDay()];
+
+//         const hours: string[] = [];
+//         const currentTime = new Date(startDate);
+
+//         while (currentTime <= endDate) {
+//           hours.push(format(currentTime, "haaa"));
+//           currentTime.setHours(currentTime.getHours() + 1);
+//         }
+
+//         (dates[day] = dates[day] || []).push(...hours);
+//       });
+//     }
+
+//     console.log(dates)
+//     return dates;
+//   }, {});
+// }
 
 const generateBackgroundColor = (count: number) => {
   return `hsl(196deg 36% ${count > 0 ? 95 - count * 5 : 95}%)`;
@@ -75,7 +123,7 @@ function generateLegend(data: number[]) {
 }
 
 interface HeatmapProps {
-  data: CalendarData | undefined;
+  data: FreeBusyResponse;
   xAxisLabels: string[];
   yAxisLabels: string[];
   orientation: "vertical" | "horizontal";
@@ -88,7 +136,7 @@ const Heatmap: React.FC<HeatmapProps> = ({
   orientation = "vertical"
 }) => {
   const minMaxCount = useRef<number[]>([]);
-  const formattedData = formatDayAndHour(data || {primary: {busy: []}});
+  const formattedData = compileDatesFromEmails(data || {});
 
   const gridCells = xAxisLabels.reduce((days: { [key: string]: { hours: { dayHour: string; count: number }[] } }, dayLabel) => {
     const dayAndHour = yAxisLabels.reduce((hours: { dayHour: string; count: number }[], hourLabel) => {

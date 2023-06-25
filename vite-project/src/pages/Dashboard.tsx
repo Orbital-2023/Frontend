@@ -1,20 +1,26 @@
 import "@/scenes/calendar/calendar.css";
 import Heatmap from "@/scenes/calendar/index.tsx";
-import { useState, useEffect} from "react";
-import googleData from "@/scenes/calendar/rawdata/google.json";
+import { useState, useEffect } from "react";
+import googleData from "@/scenes/calendar/rawdata/newdata.json";
 import NavbarCalendar from "@/scenes/calendar/navbar-calendar/navbarCalendar.tsx";
 
-interface Event {
+interface BusySlot {
   start: string;
   end: string;
 }
 
-interface Calendar {
-  busy: Event[];
+interface CalendarData {
+  busy: BusySlot[];
 }
 
-interface CalendarData {
-  primary: Calendar;
+interface Calendar {
+  [email: string]: CalendarData;
+}
+
+interface FreeBusyResponse {
+  data: {
+    calendars: Calendar;
+  };
 }
 
 const dayLabels: string[] = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -46,10 +52,10 @@ const hourLabels: string[] = [
 ];
 
 export default function Dashboard() {
-  const [data, setData] = useState<CalendarData | undefined>(undefined);
+  const [data, setData] = useState<FreeBusyResponse | undefined>(undefined);
 
   useEffect(() => {
-    setData(googleData?.calendars);
+    setData(googleData?.data);
   }, []);
 
   return (
@@ -59,7 +65,7 @@ export default function Dashboard() {
         <div className="container">
           <Heatmap
             orientation="vertical"
-            data={data}
+            data={data} // passing googleData directly
             xAxisLabels={dayLabels}
             yAxisLabels={hourLabels}
           />
@@ -68,25 +74,3 @@ export default function Dashboard() {
     </>
   );
 }
-
-
-// import { Data } from "./scenes/calendar/rawdata/data.tsx";
-
-  // fetch API, change Data to data under <Heatmap>
-  // const [data, setData] = useState([]);
-
-  // useEffect(() => {
-  //   fetchData();
-  // }, []);
-
-  // const fetchData = async () => {
-  //   try {
-  //     const response = await fetch("YOUR_GOOGLE_API_URL");
-  //     const jsonData = await response.json();
-  //     setData(jsonData);
-  //   } catch (error) {
-  //     console.error("Error fetching data:", error);
-  //   }
-  // };
-
-  // TODO read from the google.json file instead
