@@ -1,51 +1,5 @@
 import { useRef } from "react";
-import { format } from "date-fns";
 import "./calendar.css";
-
-const DAY_INDEXES: { [key: number]: string } = {
-  0: "Sun",
-  1: "Mon",
-  2: "Tue",
-  3: "Wed",
-  4: "Thu",
-  5: "Fri",
-  6: "Sat"
-};
-
-interface Event {
-  start: string;
-  end: string;
-}
-
-interface Calendar {
-  busy: Event[];
-}
-
-interface CalendarData {
-  primary: Calendar;
-}
-function formatDayAndHour(chartData: CalendarData) {
-  const busyEvents = chartData?.primary?.busy;
-
-  return busyEvents.reduce((dates: { [key: string]: string[] }, event: Event) => {
-    const { start, end } = event;
-    const startDate = new Date(start);
-    const endDate = new Date(end);
-    const day = DAY_INDEXES[startDate.getDay()];
-
-    const hours: string[] = [];
-    const currentTime = new Date(startDate);
-
-    while (currentTime <= endDate) {
-      hours.push(format(currentTime, "haaa"));
-      currentTime.setHours(currentTime.getHours() + 1);
-    }
-
-    (dates[day] = dates[day] || []).push(...hours);
-
-    return dates;
-  }, {});
-}
 
 const generateBackgroundColor = (count: number) => {
   return `hsl(196deg 36% ${count > 0 ? 95 - count * 5 : 95}%)`;
@@ -73,9 +27,18 @@ function generateLegend(data: number[]) {
     </div>
   );
 }
+export interface Schedule {
+  Mon: string[];
+  Tue: string[];
+  Wed: string[];
+  Thu: string[];
+  Fri: string[];
+  Sat: string[];
+  Sun: string[];
+}
 
 interface HeatmapProps {
-  data: CalendarData | undefined;
+  data: Schedule;
   xAxisLabels: string[];
   yAxisLabels: string[];
   orientation: "vertical" | "horizontal";
@@ -88,11 +51,11 @@ const Heatmap: React.FC<HeatmapProps> = ({
   orientation = "vertical"
 }) => {
   const minMaxCount = useRef<number[]>([]);
-  const formattedData = formatDayAndHour(data || {primary: {busy: []}});
+  const formattedData = data;
 
   const gridCells = xAxisLabels.reduce((days: { [key: string]: { hours: { dayHour: string; count: number }[] } }, dayLabel) => {
     const dayAndHour = yAxisLabels.reduce((hours: { dayHour: string; count: number }[], hourLabel) => {
-      const count = formattedData[dayLabel]?.reduce((total, hour) => {
+      const count = (formattedData[dayLabel as keyof Schedule])?.reduce((total: number, hour: string) => {
         return hour === hourLabel ? total + 1 : total;
       }, 0);
 

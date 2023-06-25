@@ -1,21 +1,11 @@
 import "@/scenes/calendar/calendar.css";
 import Heatmap from "@/scenes/calendar/index.tsx";
+import { Schedule } from "@/scenes/calendar/index.tsx";
 import { useState, useEffect} from "react";
-import googleData from "@/scenes/calendar/rawdata/google.json";
+// import googleData from "@/scenes/calendar/rawdata/newdata.json";
+import axios from 'axios'
+
 import NavbarCalendar from "@/scenes/calendar/navbar-calendar/navbarCalendar.tsx";
-
-interface Event {
-  start: string;
-  end: string;
-}
-
-interface Calendar {
-  busy: Event[];
-}
-
-interface CalendarData {
-  primary: Calendar;
-}
 
 const dayLabels: string[] = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const hourLabels: string[] = [
@@ -46,10 +36,25 @@ const hourLabels: string[] = [
 ];
 
 export default function Dashboard() {
-  const [data, setData] = useState<CalendarData | undefined>(undefined);
+  const [data, setData] = useState<Schedule>({} as Schedule);
 
+  // useEffect(() => {
+  //   setData(JSON.parse(JSON.stringify(googleData)) as Schedule);
+  // }, []);
+
+  // fetch data from express.js
   useEffect(() => {
-    setData(googleData?.calendars);
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("/api/calendar/events");
+        console.log(response.data)
+        setData(response.data as Schedule);
+      } catch (error) {
+        console.error("Error fetching calendar events:", error);
+      }
+    };
+
+    fetchData();
   }, []);
 
   return (
@@ -68,25 +73,3 @@ export default function Dashboard() {
     </>
   );
 }
-
-
-// import { Data } from "./scenes/calendar/rawdata/data.tsx";
-
-  // fetch API, change Data to data under <Heatmap>
-  // const [data, setData] = useState([]);
-
-  // useEffect(() => {
-  //   fetchData();
-  // }, []);
-
-  // const fetchData = async () => {
-  //   try {
-  //     const response = await fetch("YOUR_GOOGLE_API_URL");
-  //     const jsonData = await response.json();
-  //     setData(jsonData);
-  //   } catch (error) {
-  //     console.error("Error fetching data:", error);
-  //   }
-  // };
-
-  // TODO read from the google.json file instead

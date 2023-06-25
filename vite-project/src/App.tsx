@@ -1,6 +1,7 @@
 import Landing from "./pages/Landing";
 import Dashboard from "./pages/Dashboard";
 import { Routes, Route } from 'react-router-dom';
+import MyComponent from "./pages/Test"
 
 function App() {
  return(
@@ -9,6 +10,7 @@ function App() {
       <Route path="/" element={<Landing />} />
       <Route path="dashboard" element={<Dashboard />} />
     </Routes>
+    {/* <MyComponent></MyComponent> */}
   </div>
  )
 }
