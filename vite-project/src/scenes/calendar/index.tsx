@@ -1,3 +1,16 @@
+// change this function to format the start-end timestamp to hourly timestamp
+// function formatDayAndHour(chartData: string[]) {
+//   return chartData.reduce((dates: { [key: string]: string[] }, dateString) => {
+//     const date = new Date(dateString);
+//     const day = DAY_INDEXES[date.getDay()];
+//     const hour = format(date, "haaa");
+
+//     (dates[day] = dates[day] || []).push(hour);
+
+//     return dates;
+//   }, {});
+// }
+
 import { useRef } from "react";
 import { format } from "date-fns";
 import "./calendar.css";
@@ -12,13 +25,36 @@ const DAY_INDEXES: { [key: number]: string } = {
   6: "Sat"
 };
 
-function formatDayAndHour(chartData: string[]) {
-  return chartData.reduce((dates: { [key: string]: string[] }, dateString) => {
-    const date = new Date(dateString);
-    const day = DAY_INDEXES[date.getDay()];
-    const hour = format(date, "haaa");
+interface Event {
+  start: string;
+  end: string;
+}
 
-    (dates[day] = dates[day] || []).push(hour);
+interface Calendar {
+  busy: Event[];
+}
+
+interface CalendarData {
+  primary: Calendar;
+}
+function formatDayAndHour(chartData: CalendarData) {
+  const busyEvents = chartData?.primary?.busy;
+
+  return busyEvents.reduce((dates: { [key: string]: string[] }, event: Event) => {
+    const { start, end } = event;
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+    const day = DAY_INDEXES[startDate.getDay()];
+
+    const hours: string[] = [];
+    const currentTime = new Date(startDate);
+
+    while (currentTime <= endDate) {
+      hours.push(format(currentTime, "haaa"));
+      currentTime.setHours(currentTime.getHours() + 1);
+    }
+
+    (dates[day] = dates[day] || []).push(...hours);
 
     return dates;
   }, {});
@@ -52,20 +88,20 @@ function generateLegend(data: number[]) {
 }
 
 interface HeatmapProps {
-  data: string[];
+  data: CalendarData | undefined;
   xAxisLabels: string[];
   yAxisLabels: string[];
   orientation: "vertical" | "horizontal";
 }
 
 const Heatmap: React.FC<HeatmapProps> = ({
-  data = [],
+  data,
   xAxisLabels = [],
   yAxisLabels = [],
   orientation = "vertical"
 }) => {
   const minMaxCount = useRef<number[]>([]);
-  const formattedData = formatDayAndHour(data);
+  const formattedData = formatDayAndHour(data || {primary: {busy: []}});
 
   const gridCells = xAxisLabels.reduce((days: { [key: string]: { hours: { dayHour: string; count: number }[] } }, dayLabel) => {
     const dayAndHour = yAxisLabels.reduce((hours: { dayHour: string; count: number }[], hourLabel) => {

@@ -1,4 +1,7 @@
-console.log("Data read")
+// will a data.tsx be generated for each room
+// also how will we solve the issue of a re-entry? or dynamic update of the google calendar?
+// milestone 2: assume that each person only submit once. will generate 1 unique data.tsx per room
+// TODO: generate 1 unique data.tsx per room
 
 export const Data: string[] = [
   "2019-10-28 20:07 (-06)",

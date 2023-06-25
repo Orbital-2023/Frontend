@@ -1,6 +1,20 @@
-import "./scenes/calendar/calendar.css"
-import Heatmap from "./scenes/calendar/index.js";
-import { Data } from "./scenes/calendar/data.js";
+import "./scenes/calendar/calendar.css";
+import Heatmap from "./scenes/calendar/index.tsx";
+import { useState, useEffect} from "react";
+import googleData from "./scenes/calendar/rawdata/google.json";
+
+interface Event {
+  start: string;
+  end: string;
+}
+
+interface Calendar {
+  busy: Event[];
+}
+
+interface CalendarData {
+  primary: Calendar;
+}
 
 const dayLabels: string[] = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const hourLabels: string[] = [
@@ -30,13 +44,19 @@ const hourLabels: string[] = [
   "11pm"
 ];
 
-export default function App() {
+export default function Dashboard() {
+  const [data, setData] = useState<CalendarData | undefined>(undefined);
+
+  useEffect(() => {
+    setData(googleData?.calendars);
+  }, []);
+
   return (
     <>
       <div className="container">
         <Heatmap
           orientation="vertical"
-          data={Data}
+          data={data}
           xAxisLabels={dayLabels}
           yAxisLabels={hourLabels}
         />
@@ -44,7 +64,7 @@ export default function App() {
       <div className="container">
         <Heatmap
           orientation="horizontal"
-          data={Data}
+          data={data}
           xAxisLabels={dayLabels}
           yAxisLabels={hourLabels}
         />
@@ -52,3 +72,25 @@ export default function App() {
     </>
   );
 }
+
+
+// import { Data } from "./scenes/calendar/rawdata/data.tsx";
+
+  // fetch API, change Data to data under <Heatmap>
+  // const [data, setData] = useState([]);
+
+  // useEffect(() => {
+  //   fetchData();
+  // }, []);
+
+  // const fetchData = async () => {
+  //   try {
+  //     const response = await fetch("YOUR_GOOGLE_API_URL");
+  //     const jsonData = await response.json();
+  //     setData(jsonData);
+  //   } catch (error) {
+  //     console.error("Error fetching data:", error);
+  //   }
+  // };
+
+  // TODO read from the google.json file instead

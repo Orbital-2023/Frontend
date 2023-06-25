@@ -49,7 +49,7 @@ function convertTimeToHourlyTimestamps(json: string): string[] {
 }
 
 // Read input JSON from "google.json" --> will fetch from the api later on
-readFile('./rawdata/google.json', 'utf8', (err, json) => {
+readFile('google.json', 'utf8', (err, json) => {
   if (err) {
     console.error('Error reading input file:', err);
     return;
