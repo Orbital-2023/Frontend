@@ -1,6 +1,5 @@
 import Navbar from "@/scenes/navbar";
 import Home from "@/scenes/home";
-import Features from "@/scenes/features";
 import JoinUs from "@/scenes/joinnus";
 import { useEffect, useState } from "react";
 import { SelectedPage } from "@/shared/types";
@@ -33,7 +32,6 @@ const [isTopOfPage, setIsTopOfPage] = useState<boolean>(true);
       setSelectedPage={setSelectedPage}
     />
     <Home setSelectedPage={setSelectedPage} />
-    {/* <Features setSelectedPage={setSelectedPage} /> */}
     <JoinUs setSelectedPage={setSelectedPage} />
   </div>;
 
