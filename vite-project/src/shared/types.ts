@@ -2,6 +2,7 @@ export enum SelectedPage {
   Home = "home",
   Features = "features",
   JoinUs="joinus",
+  Login="login"
 }
 
 export interface FeatureType {

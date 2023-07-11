@@ -1,39 +1,124 @@
-// Set input fields to be empty for Yun Chao to port over
-// Change input fields to be: Room ID, Room Password & Gmail account (email)
+// linked with register api
 
-import { useForm } from "react-hook-form";
+import { Link } from 'react-router-dom';
+import { Component } from "react";
+import { Formik, Field, Form, ErrorMessage } from "formik";
+import * as Yup from "yup";
+
 import { SelectedPage } from "@/shared/types";
 import { motion } from "framer-motion";
-import ContactUsPageGraphic from "@/assets/contactUsGraphic.png";
 import HText from "@/shared/HText";
-import { Link } from 'react-router-dom';
+
+import authService from "@/services/auth.service";
 
 type Props = {
   setSelectedPage: (value: SelectedPage) => void;
 };
 
-const JoinUs = ({ setSelectedPage }: Props) => {
-  const inputStyles = `mb-5 w-full rounded-lg bg-primary-300
-  px-5 py-3 placeholder-white`;
+type State = {
+  roomId: string,
+  email: string,
+  roomPassword: string,
+  successful: boolean,
+  message: string
+};
 
-  const {
-    register,
-    trigger,
-    formState: { errors },
-  } = useForm();
+export default class JoinUs extends Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    this.handleRegister = this.handleRegister.bind(this);
 
-  const onSubmit = async (e: any) => {
-    const isValid = await trigger();
-    if (!isValid) {
-      e.preventDefault();
-    }
-  };
+    this.state = {
+      roomId: "",
+      email: "",
+      roomPassword: "",
+      successful: false,
+      message: ""
+    };
+  }
 
-  return (
-    <section id="joinus" className="mx-auto w-5/6 pt-24 pb-32">
-      <motion.div
-        onViewportEnter={() => setSelectedPage(SelectedPage.JoinUs)}
-      >
+  validationSchema() {
+    return Yup.object().shape({
+      roomId: Yup.string()
+        .test(
+          "len",
+          "The roomId must be between 3 and 20 characters.",
+          (val: any) =>
+            val &&
+            val.toString().length >= 3 &&
+            val.toString().length <= 20
+        )
+        .required("This field is required!"),
+      email: Yup.string()
+        .email("This is not a valid email.")
+        .required("This field is required!"),
+      roomPassword: Yup.string()
+        .test(
+          "len",
+          "The roomPassword must be between 6 and 40 characters.",
+          (val: any) =>
+            val &&
+            val.toString().length >= 6 &&
+            val.toString().length <= 40
+        )
+        .required("This field is required!"),
+    });
+  }
+
+  handleRegister(formValue: { roomId: string; email: string; roomPassword: string }) {
+    const { roomId, email, roomPassword } = formValue;
+
+    this.setState({
+      message: "",
+      successful: false
+    });
+
+    authService.register(
+      roomId,
+      email,
+      roomPassword
+    ).then(
+      response => {
+        this.setState({
+          message: response.data.message,
+          successful: true
+        });
+      },
+      error => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+
+        this.setState({
+          successful: false,
+          message: resMessage
+        });
+      }
+    );
+  }
+
+  render() {
+    const { successful, message } = this.state;
+
+    const { setSelectedPage } = this.props;
+
+    const inputStyles = `mb-5 w-full rounded-lg bg-primary-300
+    px-5 py-3 placeholder-white`;
+
+    const initialValues = {
+      roomId: "",
+      email: "",
+      roomPassword: "",
+    };
+
+    return (
+      <section id="joinus" className="mx-auto w-5/6 pb-32 pt-24">
+        <motion.div
+          onViewportEnter={() => setSelectedPage(SelectedPage.JoinUs)}
+        ></motion.div>
         {/* HEADER */}
         <motion.div
           className="md:w-3/5"
@@ -47,10 +132,12 @@ const JoinUs = ({ setSelectedPage }: Props) => {
           }}
         >
           <HText>
-            <span className="mt-10 text-primary-500">JOIN NOW</span> TO GET PLANNING
+            <span className="mt-10 text-primary-500">JOIN NOW</span> TO GET
+            PLANNING
           </HText>
           <p className="my-5">
-            Generate your unique Room ID, key in your room password and provide us with your Gmail Account to get started!
+            Generate your unique Room ID, key in your room password and provide
+            us with your Gmail Account to get started!
           </p>
         </motion.div>
 
@@ -67,96 +154,89 @@ const JoinUs = ({ setSelectedPage }: Props) => {
               visible: { opacity: 1, y: 0 },
             }}
           >
-            <form
-              target="_blank"
-              onSubmit={onSubmit}
-              action="https://formsubmit.co/e8a5bdfa807605332f809e5656e27c6e"
-              method="POST"
+            <Formik
+              initialValues={initialValues}
+              validationSchema={this.validationSchema}
+              onSubmit={this.handleRegister}
             >
-              <input
-                className={inputStyles}
-                type="text"
-                placeholder="ROOM ID"
-                {...register("roomid", {
-                  required: true,
-                  maxLength: 100,
-                })}
-              />
-              {errors.name && (
-                <p className="mt-1 text-primary-500">
-                  {errors.name.type === "required" && "This field is required."}
-                  {errors.name.type === "maxLength" &&
-                    "Max length is 100 char."}
-                </p>
-              )}
+              <Form>
+                {!successful && (
+                  <div>
+                    <div className={inputStyles}>
+                      {/* <label htmlFor="roomId"> ROOM ID </label> */}
+                      <Field
+                        name="roomId"
+                        type="text"
+                        className="form-control"
+                        placeholder="room id"
+                      />
+                      <ErrorMessage
+                        name="roomId"
+                        component="div"
+                        className="alert alert-danger"
+                      />
+                    </div>
 
-              <input
-                className={inputStyles}
-                type="text"
-                placeholder="ROOM PASSWORD"
-                {...register("roompassword", {
-                  required: true,
-                  maxLength: 100,
-                })}
-              />
-              {errors.name && (
-                <p className="mt-1 text-primary-500">
-                  {errors.name.type === "required" && "This field is required."}
-                  {errors.name.type === "maxLength" &&
-                    "Max length is 100 char."}
-                </p>
-              )}
+                    <div className={inputStyles}>
+                      {/* <label htmlFor="email"> EMAIL </label> */}
+                      <Field
+                        name="email"
+                        type="email"
+                        className="form-control"
+                        placeholder="email"
+                      />
+                      <ErrorMessage
+                        name="email"
+                        component="div"
+                        className="alert alert-danger"
+                      />
+                    </div>
 
-              <input
-                className={inputStyles}
-                type="text"
-                placeholder="GMAIL"
-                {...register("email", {
-                  required: true,
-                  pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                })}
-              />
-              {errors.email && (
-                <p className="mt-1 text-primary-500">
-                  {errors.email.type === "required" &&
-                    "This field is required."}
-                  {errors.email.type === "pattern" && "Invalid email address."}
-                </p>
-              )}
-              <Link to="/dashboard">
-                <button
-                  type="submit"
-                  className="mt-5 rounded-lg bg-secondary-500 px-20 py-3 transition duration-500 hover:text-white"
-                >
-                  LOGIN
-                </button>
-              </Link>
-            </form>
-          </motion.div>
+                    <div className={inputStyles}>
+                      {/* <label htmlFor="roomPassword"> PASSWORD </label> */}
+                      <Field
+                        name="roomPassword"
+                        type="password"
+                        className="form-control"
+                        placeholder="password"
+                      />
+                      <ErrorMessage
+                        name="roomPassword"
+                        component="div"
+                        className="alert alert-danger"
+                      />
+                    </div>
 
-          <motion.div
-            className="relative mt-16 basis-2/5 md:mt-0"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.5 }}
-            transition={{ delay: 0.2, duration: 0.5 }}
-            variants={{
-              hidden: { opacity: 0, y: 50 },
-              visible: { opacity: 1, y: 0 },
-            }}
-          >
-            <div className="w-full before:absolute before:-bottom-20 before:-right-10 before:z-[-1] md:before:content-evolvetext">
-              <img
-                className="w-full"
-                alt="contact-us-page-graphic"
-                src={ContactUsPageGraphic}
-              />
-            </div>
+                    <button
+                      type="submit"
+                      className="mt-5 rounded-lg bg-secondary-500 px-20 py-3 transition duration-500 hover:text-white"
+                    >
+                      Sign Up
+                    </button>
+                    {/* TODO: link submit button to /dashboard if successful */}
+
+                  </div>
+                )}
+
+                {message && (
+                  <div className={inputStyles}>
+                    <div
+                      className={
+                        successful
+                          ? "alert alert-success"
+                          : "alert alert-danger"
+                      }
+                      role="alert"
+                    >
+                      {message}
+                    </div>
+                  </div>
+                )}
+              </Form>
+            </Formik>
           </motion.div>
         </div>
-      </motion.div>
-    </section>
-  );
-};
-
-export default JoinUs;
+      </section>
+    );
+  }
+}
