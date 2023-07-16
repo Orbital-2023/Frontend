@@ -16,3 +16,9 @@ export interface ClassType {
   description?: string;
   image: string;
 }
+export default interface IUser {
+  roomId?: any | null,
+  username?: string | null,
+  email?: string,
+  roomPassword?: string,
+}

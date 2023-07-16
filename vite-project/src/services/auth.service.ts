@@ -11,10 +11,7 @@ class AuthService {
       })
       // access local storage and check if information is correct if token is implemented
       .then(response => {
-        if (response.data.accessToken) {
-          localStorage.setItem("roomId", JSON.stringify(response.data));
-        }
-
+        localStorage.setItem("roomId", JSON.stringify(response.data));
         return response.data;
       });
   }
