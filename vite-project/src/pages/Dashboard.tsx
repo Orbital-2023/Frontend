@@ -5,7 +5,9 @@ import { useState, useEffect} from "react";
 // import googleData from "@/scenes/calendar/rawdata/newdata.json";
 import axios from 'axios'
 
+// import components
 import NavbarCalendar from "@/scenes/calendar/navbar-calendar/navbarCalendar.tsx";
+import CalendarDatePicker from "@/scenes/calendar/datepicker";
 
 const dayLabels: string[] = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const hourLabels: string[] = [
@@ -59,7 +61,7 @@ export default function Dashboard() {
 
   return (
     <>
-      <div className="flex flex-col space-y-15">
+      <div className="space-y-15 flex flex-col">
         <NavbarCalendar></NavbarCalendar>
         <div className="container">
           <Heatmap
@@ -68,6 +70,7 @@ export default function Dashboard() {
             xAxisLabels={dayLabels}
             yAxisLabels={hourLabels}
           />
+          <CalendarDatePicker></CalendarDatePicker>
         </div>
       </div>
     </>

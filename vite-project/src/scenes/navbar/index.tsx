@@ -5,6 +5,7 @@ import { SelectedPage } from "@/shared/types"
 import useMediaQuery from "@/hooks/useMediaQuery"
 import ActionButton from "@/shared/ActionButton"
 import LinkC from "./Link"
+import { Link } from 'react-router-dom';
 
 type Props = {
   isTopOfPage: boolean;
@@ -21,7 +22,9 @@ const Navbar = ({ isTopOfPage, selectedPage, setSelectedPage}: Props) => {
 
   return (
     <nav>
-      <div className={`${navbarBackground} ${flexBetween} fixed top-0 z-30 w-full py-6`}>
+      <div
+        className={`${navbarBackground} ${flexBetween} fixed top-0 z-30 w-full py-6`}
+      >
         <div className={`${flexBetween} mx-auto w-5/6`}>
           <div className={`${flexBetween} w-full gap-16`}>
             {/* LEFT SIDE */}
@@ -29,37 +32,39 @@ const Navbar = ({ isTopOfPage, selectedPage, setSelectedPage}: Props) => {
             <img alt="logo" src={CalendarLogo} />
             {/* RIGHT SIDE */}
             {isAboveMediumScreens ? (
-            <div className={`${flexBetween} w-full`}>
-              <div className={`${flexBetween} gap-8 text-sm`}>
-                <LinkC
+              <div className={`${flexBetween} w-full`}>
+                <div className={`${flexBetween} gap-8 text-sm`}>
+                  <LinkC
                     page="Home"
                     selectedPage={selectedPage}
                     setSelectedPage={setSelectedPage}
                   />
-                  {/* <LinkC
-                    page="Features"
-                    selectedPage={selectedPage}
-                    setSelectedPage={setSelectedPage}
-                  /> */}
                   <LinkC
                     page="Join Us"
                     selectedPage={selectedPage}
                     setSelectedPage={setSelectedPage}
                   />
+                </div>
+                {/* A universal log in --> ask for room number, password & google details
+                 */}
+                <div className={`${flexBetween} gap-8`}>
+                  {/* quick backdoor to Calendar */}
+                  <Link to="/dashboard">
+                    <button
+                      type="submit"
+                      className="mt-5 rounded-lg bg-secondary-500 px-20 py-3 transition duration-500 hover:text-white"
+                    >
+                      LOGIN
+                    </button>
+                  </Link>
+                </div>
               </div>
-              {/* A universal log in --> ask for room number, password & google details
-              */}
-              <div className={`${flexBetween} gap-8`}>
-                <ActionButton setSelectedPage={setSelectedPage}>
-                  Log In
-                </ActionButton>
-              </div>
-            </div>
             ) : (
               <button
                 className="rounded-full bg-secondary-500 p-2"
-                onClick={() => setIsMenuToggled(!isMenuToggled)}>
-                  <Bars3Icon className="h-6 w-6 text-white" />
+                onClick={() => setIsMenuToggled(!isMenuToggled)}
+              >
+                <Bars3Icon className="h-6 w-6 text-white" />
               </button>
             )}
           </div>
@@ -68,7 +73,7 @@ const Navbar = ({ isTopOfPage, selectedPage, setSelectedPage}: Props) => {
 
       {/* MOBILE MENU MODAL */}
       {!isAboveMediumScreens && isMenuToggled && (
-        <div className="fixed right-0 bottom-0 z-40 h-full w-[300px] bg-primary-100 drop-shadow-xl">
+        <div className="fixed bottom-0 right-0 z-40 h-full w-[300px] bg-primary-100 drop-shadow-xl">
           {/* CLOSE ICON */}
           <div className="flex justify-end p-12">
             <button onClick={() => setIsMenuToggled(!isMenuToggled)}>
@@ -83,11 +88,6 @@ const Navbar = ({ isTopOfPage, selectedPage, setSelectedPage}: Props) => {
               selectedPage={selectedPage}
               setSelectedPage={setSelectedPage}
             />
-            {/* <LinkC
-              page="Features"
-              selectedPage={selectedPage}
-              setSelectedPage={setSelectedPage}
-            /> */}
             <LinkC
               page="Join Us"
               selectedPage={selectedPage}

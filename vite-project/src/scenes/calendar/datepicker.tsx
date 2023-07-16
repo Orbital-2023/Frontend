@@ -20,7 +20,7 @@ const CalendarDatePicker = () => {
         setValue(newValue);
     }
 
-    // link to Backend once clicked
+    // TODO: link to Backend once clicked
     // Also handles addition of startDate + 7 
     // returns in YYYY-MM-DD format
     const handleSubmit = () => {
