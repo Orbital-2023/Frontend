@@ -28,7 +28,6 @@ const Navbar = ({ isTopOfPage, selectedPage, setSelectedPage}: Props) => {
         <div className={`${flexBetween} mx-auto w-5/6`}>
           <div className={`${flexBetween} w-full gap-16`}>
             {/* LEFT SIDE */}
-            {/* Create our own logo & Replace this logo */}
             <img alt="logo" src={CalendarLogo} />
             {/* RIGHT SIDE */}
             {isAboveMediumScreens ? (
@@ -49,7 +48,7 @@ const Navbar = ({ isTopOfPage, selectedPage, setSelectedPage}: Props) => {
                  */}
                 <div className={`${flexBetween} gap-8`}>
                   {/* quick backdoor to Calendar */}
-                  <Link to="/dashboard">
+                  <Link to="/onlogin">
                     <button
                       type="submit"
                       className="mt-5 rounded-lg bg-secondary-500 px-20 py-3 transition duration-500 hover:text-white"

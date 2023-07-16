@@ -1,155 +1,167 @@
 // Integrated with Login API, in a separate page
 
-import { useForm } from "react-hook-form";
 import { Link } from 'react-router-dom';
+import { Component } from "react";
+import { Formik, Field, Form, ErrorMessage } from "formik";
+import * as Yup from "yup";
 
-import { SelectedPage } from "@/shared/types";
-import { motion } from "framer-motion";
-import HText from "@/shared/HText";
+import authService from "@/services/auth.service";
 
-type Props = {
-  setSelectedPage: (value: SelectedPage) => void;
+type Props = {};
+
+type State = {
+  redirect: string | null;
+  roomId: string;
+  roomPassword: string;
+  loading: boolean;
+  message: string;
 };
 
-const JoinUs = ({ setSelectedPage }: Props) => {
-  const inputStyles = `mb-5 w-full rounded-lg bg-primary-300
-  px-5 py-3 placeholder-white`;
+export default class OnLogin extends Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    this.handleLogin = this.handleLogin.bind(this);
 
-  const {
-    register,
-    trigger,
-    formState: { errors },
-  } = useForm();
+    this.state = {
+      redirect: null,
+      roomId: "",
+      roomPassword: "",
+      loading: false,
+      message: "",
+    };
+  }
 
-  const onSubmit = async (e: any) => {
-    const isValid = await trigger();
-    if (!isValid) {
-      e.preventDefault();
+  // redirect to /Dashboard if the login is successful
+  // Documentation: https://legacy.reactjs.org/docs/react-component.html 
+  componentDidMount() {
+    const currentUser = authService.getCurrentUser();
+
+    if (currentUser) {
+      this.setState({ redirect: "/Dashboard" });
     }
-  };
+  }
 
-  return (
-    <section id="joinus" className="mx-auto w-5/6 pt-24 pb-32">
-      <motion.div
-        onViewportEnter={() => setSelectedPage(SelectedPage.JoinUs)}
-      >
-        {/* HEADER */}
-        <motion.div
-          className="md:w-3/5"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 0.5 }}
-          variants={{
-            hidden: { opacity: 0, x: -50 },
-            visible: { opacity: 1, x: 0 },
-          }}
-        >
-          <HText>
-            <span className="mt-10 text-primary-500">JOIN NOW</span> TO GET PLANNING
-          </HText>
-          <p className="my-5">
-            Generate your unique Room ID, key in your room password and provide us with your Gmail Account to get started!
-          </p>
-        </motion.div>
+  // componentWillUnmount(){
+  //   window.location.reload();
+  // }
 
-        {/* FORM AND IMAGE */}
-        <div className="mt-10 justify-between gap-8 md:flex">
-          <motion.div
-            className="mt-10 basis-3/5 md:mt-0"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.5 }}
-            transition={{ duration: 0.5 }}
-            variants={{
-              hidden: { opacity: 0, y: 50 },
-              visible: { opacity: 1, y: 0 },
-            }}
+  validationSchema() {
+    return Yup.object().shape({
+      roomId: Yup.string().required("This field is required!"),
+      roomPassword: Yup.string().required("This field is rquuired!"),
+    });
+  }
+
+  handleLogin(formValue: { roomId: string; roomPassword: string }) {
+    const { roomId, roomPassword } = formValue;
+    this.setState({
+      message: "",
+      loading: true,
+    });
+
+    authService.login(roomId, roomPassword).then(
+      () => {
+        this.setState({
+          redirect: "/Dashboard",
+        });
+      },
+      (error) => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+
+        this.setState({
+          loading: false,
+          message: resMessage,
+        });
+      }
+    );
+  }
+
+  render() {
+    if (this.state.redirect) {
+      return <Link to={this.state.redirect} />;
+    }
+
+    const { loading, message } = this.state;
+
+    const inputStyles = `mb-5 w-full rounded-lg bg-primary-300
+    px-5 py-3 placeholder-white`;
+
+    const initialValues = {
+      roomId: "",
+      roomPassword: "",
+    };
+    return (
+      <section id="login" className="mx-auto w-5/6 pb-32 pt-24">
+        <div className="justtify-between mt-10 gap-8 md:flex">
+          <Formik
+            initialValues={initialValues}
+            validationSchema={this.validationSchema}
+            onSubmit={this.handleLogin}
           >
-            <form
-              target="_blank"
-              onSubmit={onSubmit}
-              action="https://formsubmit.co/e8a5bdfa807605332f809e5656e27c6e"
-              method="POST"
-            >
-              <input
-                className={inputStyles}
-                type="text"
-                placeholder="ROOM ID"
-                {...register("roomid", {
-                  required: true,
-                  maxLength: 100,
-                })}
-              />
-              {errors.name && (
-                <p className="mt-1 text-primary-500">
-                  {errors.name.type === "required" && "This field is required."}
-                  {errors.name.type === "maxLength" &&
-                    "Max length is 100 char."}
-                </p>
-              )}
-
-              <input
-                className={inputStyles}
-                type="text"
-                placeholder="ROOM PASSWORD"
-                {...register("roompassword", {
-                  required: true,
-                  maxLength: 100,
-                })}
-              />
-              {errors.name && (
-                <p className="mt-1 text-primary-500">
-                  {errors.name.type === "required" && "This field is required."}
-                  {errors.name.type === "maxLength" &&
-                    "Max length is 100 char."}
-                </p>
-              )}
-
-              <input
-                className={inputStyles}
-                type="text"
-                placeholder="GMAIL"
-                {...register("email", {
-                  required: true,
-                  pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                })}
-              />
-              {errors.email && (
-                <p className="mt-1 text-primary-500">
-                  {errors.email.type === "required" &&
-                    "This field is required."}
-                  {errors.email.type === "pattern" && "Invalid email address."}
-                </p>
-              )}
+            <Form>
+              <div className={inputStyles}>
+                <Field
+                  name="roomId"
+                  type="text"
+                  className="form-control"
+                  placeholder="room id"
+                />
+                <ErrorMessage
+                  name="roomId"
+                  component="div"
+                  className="alert alert-danger"
+                />
+              </div>
+              <div className={inputStyles}>
+                {/* <label htmlFor="roomPassword"> PASSWORD </label> */}
+                <Field
+                  name="roomPassword"
+                  type="password"
+                  className="form-control"
+                  placeholder="password"
+                />
+                <ErrorMessage
+                  name="roomPassword"
+                  component="div"
+                  className="alert alert-danger"
+                />
+              </div>
+              <button
+                type="submit"
+                className="mt-5 rounded-lg bg-secondary-500 px-20 py-3 transition duration-500 hover:text-white"
+                disabled={loading}
+              >
+                LOGIN
+              </button>
+              {/* Backdoor to dashboard for dev */}
               <Link to="/dashboard">
                 <button
                   type="submit"
                   className="mt-5 rounded-lg bg-secondary-500 px-20 py-3 transition duration-500 hover:text-white"
                 >
-                  REGISTER
+                  BYPASS
                 </button>
               </Link>
-            </form>
-          </motion.div>
-
-          <motion.div
-            className="relative mt-16 basis-2/5 md:mt-0"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.5 }}
-            transition={{ delay: 0.2, duration: 0.5 }}
-            variants={{
-              hidden: { opacity: 0, y: 50 },
-              visible: { opacity: 1, y: 0 },
-            }}
-          >
-
-          </motion.div>
+              {message && (
+                <div className="alert">
+                  <div
+                    className="rounded-t bg-red-500 px-4 py-2 font-bold text-white"
+                    role="alert"
+                  >
+                    {message}
+                  </div>
+                </div>
+              )}
+            </Form>
+          </Formik>
         </div>
-      </motion.div>
-    </section>
-  );
-};
+      </section>
+    );
+  }
+}
 
-export default JoinUs;

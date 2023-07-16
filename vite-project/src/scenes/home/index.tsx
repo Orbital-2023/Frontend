@@ -10,7 +10,7 @@ import SponsorRedBull from "@/assets/SponsorRedBull.png";
 import SponsorForbes from "@/assets/SponsorForbes.png";
 import SponsorFortune from "@/assets/SponsorFortune.png";
 import { motion } from "framer-motion";
-
+import { Link } from "react-router-dom";
 
 type Props = {
   setSelectedPage: (value: SelectedPage) => void;
@@ -41,7 +41,7 @@ const Home = ({ setSelectedPage }: Props) => {
             }}
           >
             <div className="relative">
-              <div className="before:absolute before:-top-20 before:-left-20 before:z-[-1] md:before:content-evolvetext">
+              <div className="before:absolute before:-left-20 before:-top-20 before:z-[-1] md:before:content-evolvetext">
                 <img alt="home-page-text" src={HomePageText} />
               </div>
             </div>
@@ -49,7 +49,8 @@ const Home = ({ setSelectedPage }: Props) => {
             <p className="mt-8 text-sm">
               Unrivaled Planning. Unparalleled Organisation. World Class
               Calendar to get the Timetable That you Dream of.. Get Your Dream
-              WhenToMeet_NUS Now. WhenToMeet v2.0 integrated with your very own Google Calendar!
+              WhenToMeet_NUS Now. WhenToMeet v2.0 integrated with your very own
+              Google Calendar!
             </p>
           </motion.div>
 
@@ -65,9 +66,17 @@ const Home = ({ setSelectedPage }: Props) => {
               visible: { opacity: 1, x: 0 },
             }}
           >
-            <ActionButton setSelectedPage={setSelectedPage}>
+            <Link to="/onlogin">
+              <button
+                type="submit"
+                className="mt-5 rounded-lg bg-secondary-500 px-20 py-3 transition duration-500 hover:text-white"
+              >
+                LOGIN
+              </button>
+            </Link>
+            {/* <ActionButton setSelectedPage={setSelectedPage}>
               Log In
-            </ActionButton>
+            </ActionButton>  */}
           </motion.div>
         </div>
 
