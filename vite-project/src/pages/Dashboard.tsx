@@ -8,6 +8,7 @@ import axios from 'axios'
 // import components
 import NavbarCalendar from "@/scenes/calendar/navbar-calendar/navbarCalendar.tsx";
 import CalendarDatePicker from "@/scenes/calendar/datepicker";
+import EmailForm from "@/scenes/calendar/fetchemail";
 
 // TODO: differentiated by emails (currently scraped, will be just populating with timings)
 
@@ -40,17 +41,18 @@ const hourLabels: string[] = [
 ];
 
 export default function Dashboard() {
+  const apiUrl = "/api/meeting/append"; 
   const [data, setData] = useState<Schedule>({} as Schedule);
 
   // useEffect(() => {
   //   setData(JSON.parse(JSON.stringify(calendardata)) as Schedule);
   // }, []);
 
-// const [data, setData] = useState<Schedule>({});
+  // const [data, setData] = useState<Schedule>({});
 
-// useEffect(() => {
-//   setData(calendardata);
-// }, []);
+  // useEffect(() => {
+  //   setData(calendardata);
+  // }, []);
 
   // const [data, setData] = useState<{ [email: string]: Schedule }>({});
 
@@ -63,7 +65,7 @@ export default function Dashboard() {
     const fetchData = async () => {
       try {
         const response = await axios.get("/api/calendar/events");
-        console.log(response.data)
+        console.log(response.data);
         setData(response.data as Schedule);
       } catch (error) {
         console.error("Error fetching calendar events:", error);
@@ -85,7 +87,7 @@ export default function Dashboard() {
             yAxisLabels={hourLabels}
           />
           <CalendarDatePicker></CalendarDatePicker>
-          {/* insert calendar call with button */}
+          <EmailForm apiUrl={apiUrl}></EmailForm>
         </div>
       </div>
     </>
