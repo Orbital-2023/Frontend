@@ -2,7 +2,7 @@ import "@/scenes/calendar/calendar.css";
 import Heatmap from "@/scenes/calendar/index.tsx";
 import { Schedule } from "@/scenes/calendar/index.tsx";
 import { useState, useEffect} from "react";
-import calendardata from "@/scenes/calendar/rawdata/segmentdata.json";
+// import calendardata from "@/scenes/calendar/rawdata/segmentdata.json";
 import axios from 'axios'
 
 // import components
@@ -10,7 +10,6 @@ import NavbarCalendar from "@/scenes/calendar/navbar-calendar/navbarCalendar.tsx
 import CalendarDatePicker from "@/scenes/calendar/datepicker";
 
 // TODO: differentiated by emails (currently scraped, will be just populating with timings)
-
 
 const dayLabels: string[] = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const hourLabels: string[] = [
@@ -41,17 +40,17 @@ const hourLabels: string[] = [
 ];
 
 export default function Dashboard() {
-  // const [data, setData] = useState<Schedule>({} as Schedule);
+  const [data, setData] = useState<Schedule>({} as Schedule);
 
   // useEffect(() => {
   //   setData(JSON.parse(JSON.stringify(calendardata)) as Schedule);
   // }, []);
 
-const [data, setData] = useState<Schedule>({});
+// const [data, setData] = useState<Schedule>({});
 
-useEffect(() => {
-  setData(calendardata);
-}, []);
+// useEffect(() => {
+//   setData(calendardata);
+// }, []);
 
   // const [data, setData] = useState<{ [email: string]: Schedule }>({});
 
@@ -60,19 +59,19 @@ useEffect(() => {
   //  }, []);
 
   // fetch data from express.js
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await axios.get("/api/calendar/events");
-  //       console.log(response.data)
-  //       setData(response.data as Schedule);
-  //     } catch (error) {
-  //       console.error("Error fetching calendar events:", error);
-  //     }
-  //   };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("/api/calendar/events");
+        console.log(response.data)
+        setData(response.data as Schedule);
+      } catch (error) {
+        console.error("Error fetching calendar events:", error);
+      }
+    };
 
-  //   fetchData();
-  // }, []);
+    fetchData();
+  }, []);
 
   return (
     <>

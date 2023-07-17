@@ -1,6 +1,6 @@
 // Insert at the bottom of the Calendar prop 
 
-import React, { useState } from "react";
+import { useState } from "react";
 import Datepicker from "react-tailwindcss-datepicker";
 import { DateValueType } from "react-tailwindcss-datepicker/dist/types";
 
@@ -9,13 +9,13 @@ import { DateValueType } from "react-tailwindcss-datepicker/dist/types";
 
 const CalendarDatePicker = () => {
     // Define initial values with DateValueType
-    const [value, setValue] = useState<DateValueType>({
+    const [value, setValue] = useState<DateValueType | null>({
         startDate: null,
         endDate: null
     });
 
     // handle new value in accordance to Datepicker requirements
-    const handleValueChange = (newValue: any) => {
+    const handleValueChange = (newValue: any | null) => {
         console.log("newValue:", newValue);
         setValue(newValue);
     }
@@ -24,7 +24,7 @@ const CalendarDatePicker = () => {
     // Also handles addition of startDate + 7 
     // returns in YYYY-MM-DD format
     const handleSubmit = () => {
-        if (value.endDate) {
+        if (value && value.endDate && value.startDate) {
             const newEndDate = new Date(value.endDate);
             newEndDate.setDate(newEndDate.getDate() + 6);
             setValue(() => ({
