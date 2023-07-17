@@ -1,0 +1,20 @@
+{
+  "yeomenghan1989@gmail.com": {
+    "Mon": [],
+    "Tue": ["9am", "10am"],
+    "Wed": [],
+    "Thu": [],
+    "Fri": [],
+    "Sat": ["2am", "4am"],
+    "Sun": ["6am", "10am"]
+  },
+  "tanyunchao@gmail.com": {
+    "Mon": [],
+    "Tue": ["9am", "10am"],
+    "Wed": [],
+    "Thu": [],
+    "Fri": [],
+    "Sat": ["2am", "4am"],
+    "Sun": ["6am", "10am"]
+  }
+}
