@@ -1,20 +1,26 @@
-{
-  "yeomenghan1989@gmail.com": {
-    "Mon": [],
-    "Tue": ["9am", "10am"],
-    "Wed": [],
-    "Thu": [],
-    "Fri": [],
-    "Sat": ["2am", "4am"],
-    "Sun": ["6am", "10am"]
+[
+  {
+    "email": "tanyunchao@gmail.com",
+    "availability": {
+      "Mon": [],
+      "Tue": ["5 PM"],
+      "Wed": [],
+      "Thu": [],
+      "Fri": [],
+      "Sat": ["10 AM", "11 AM"],
+      "Sun": ["2 PM", "3 PM", "4 PM", "5 PM"]
+    }
   },
-  "tanyunchao@gmail.com": {
-    "Mon": [],
-    "Tue": ["9am", "10am"],
-    "Wed": [],
-    "Thu": [],
-    "Fri": [],
-    "Sat": ["2am", "4am"],
-    "Sun": ["6am", "10am"]
+  {
+    "email": "lolipopin123@gmail.com",
+    "availability": {
+      "Mon": [],
+      "Tue": ["7 PM", "8 PM", "9 PM", "10 PM", "11 PM"],
+      "Wed": ["12 AM", "1 AM"],
+      "Thu": [],
+      "Fri": ["1 AM", "2 AM", "3 AM"],
+      "Sat": [],
+      "Sun": ["2 PM"]
+    }
   }
-}
+]

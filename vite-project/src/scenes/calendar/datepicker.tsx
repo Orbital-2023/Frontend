@@ -50,3 +50,10 @@ const CalendarDatePicker = () => {
     );
 };
 export default CalendarDatePicker;
+
+// send as object, exactly same as the following:
+// {
+//     "roomId": "aabbc",
+//     "startDate": "1234-33-44",
+//     "endDate": "1234-55-44"
+// } 

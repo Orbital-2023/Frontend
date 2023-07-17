@@ -1,6 +1,6 @@
 import "@/scenes/calendar/calendar.css";
 import Heatmap from "@/scenes/calendar/index.tsx";
-import { Schedule } from "@/scenes/calendar/index.tsx";
+import { AvailabilityData } from "@/scenes/calendar/index.tsx";
 import { useState, useEffect} from "react";
 // import calendardata from "@/scenes/calendar/rawdata/segmentdata.json";
 import axios from 'axios'
@@ -14,66 +14,54 @@ import EmailForm from "@/scenes/calendar/fetchemail";
 
 const dayLabels: string[] = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const hourLabels: string[] = [
-  "12am",
-  "1am",
-  "2am",
-  "3am",
-  "4am",
-  "5am",
-  "6am",
-  "7am",
-  "8am",
-  "9am",
-  "10am",
-  "11am",
-  "12pm",
-  "1pm",
-  "2pm",
-  "3pm",
-  "4pm",
-  "5pm",
-  "6pm",
-  "7pm",
-  "8pm",
-  "9pm",
-  "10pm",
-  "11pm"
+  "12 AM",
+  "1 AM",
+  "2 AM",
+  "3 AM",
+  "4 AM",
+  "5 AM",
+  "6 AM",
+  "7 AM",
+  "8 AM",
+  "9 AM",
+  "10 AM",
+  "11 AM",
+  "12 PM",
+  "1 PM",
+  "2 PM",
+  "3 PM",
+  "4 PM",
+  "5 PM",
+  "6 PM",
+  "7 PM",
+  "8 PM",
+  "9 PM",
+  "10 PM",
+  "11 PM"
 ];
 
 export default function Dashboard() {
-  const apiUrl = "/api/meeting/append"; 
-  const [data, setData] = useState<Schedule>({} as Schedule);
+  const appendEmailApiUrl = "/api/meeting/append"; 
+  const calendarEventApiUrl = "api/calendar/events";
+  const [data, setData] = useState<AvailabilityData[]>([]);
 
+  // console.log("Calendar data", calendardata)
   // useEffect(() => {
-  //   setData(JSON.parse(JSON.stringify(calendardata)) as Schedule);
+  //   setData(calendardata as AvailabilityData[]);
   // }, []);
-
-  // const [data, setData] = useState<Schedule>({});
-
-  // useEffect(() => {
-  //   setData(calendardata);
-  // }, []);
-
-  // const [data, setData] = useState<{ [email: string]: Schedule }>({});
-
-  //  useEffect(() => {
-  //    setData(calendardata as { [email: string]: Schedule });
-  //  }, []);
-
-  // fetch data from express.js
+  
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get("/api/calendar/events");
-        console.log(response.data);
-        setData(response.data as Schedule);
-      } catch (error) {
-        console.error("Error fetching calendar events:", error);
-      }
-    };
-
     fetchData();
   }, []);
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(calendarEventApiUrl);
+      setData(response.data as AvailabilityData[]);
+    } catch (error) {
+      console.log("Error fetching data:", error);
+    }
+  };
 
   return (
     <>
@@ -87,7 +75,7 @@ export default function Dashboard() {
             yAxisLabels={hourLabels}
           />
           <CalendarDatePicker></CalendarDatePicker>
-          <EmailForm apiUrl={apiUrl}></EmailForm>
+          <EmailForm apiUrl={appendEmailApiUrl}></EmailForm>
         </div>
       </div>
     </>
