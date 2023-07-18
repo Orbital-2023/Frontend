@@ -3,7 +3,6 @@ import * as Yup from "yup";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import HText from "@/shared/HText";
 
 const Login = () => {
   const initialValues = {

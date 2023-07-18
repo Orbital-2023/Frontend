@@ -1,4 +1,4 @@
-import React, { useState, createContext, useContext, useEffect } from "react";
+import { useState, useEffect } from "react";
 import "@/scenes/calendar/calendar.css";
 import Heatmap from "@/scenes/calendar/index.tsx";
 import { AvailabilityData } from "@/scenes/calendar/index.tsx";
