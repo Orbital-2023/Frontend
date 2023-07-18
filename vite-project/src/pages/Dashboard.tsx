@@ -1,9 +1,9 @@
+import React, { useState, createContext, useContext, useEffect } from "react";
 import "@/scenes/calendar/calendar.css";
 import Heatmap from "@/scenes/calendar/index.tsx";
 import { AvailabilityData } from "@/scenes/calendar/index.tsx";
-import { useState, useEffect} from "react";
 // import calendardata from "@/scenes/calendar/rawdata/segmentdata.json";
-import axios from 'axios'
+import axios from "axios";
 
 // import components
 import NavbarCalendar from "@/scenes/calendar/navbar-calendar/navbarCalendar.tsx";
@@ -37,19 +37,20 @@ const hourLabels: string[] = [
   "8 PM",
   "9 PM",
   "10 PM",
-  "11 PM"
+  "11 PM",
 ];
 
 export default function Dashboard() {
-  const appendEmailApiUrl = "/api/meeting/append"; 
-  const calendarEventApiUrl = "api/calendar/events";
+
+  const appendEmailApiUrl = "/api/meeting/append";
+  const calendarEventApiUrl = "/api/calendar/events";
   const [data, setData] = useState<AvailabilityData[]>([]);
 
   // console.log("Calendar data", calendardata)
   // useEffect(() => {
   //   setData(calendardata as AvailabilityData[]);
   // }, []);
-  
+
   useEffect(() => {
     fetchData();
   }, []);

@@ -1,167 +1,114 @@
-// Integrated with Login API, in a separate page
-
-import { Link } from 'react-router-dom';
-import { Component } from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import HText from "@/shared/HText";
 
-import authService from "@/services/auth.service";
+const Login = () => {
+  const initialValues = {
+    roomId: "",
+    roomPassword: "",
+  };
 
-type Props = {};
+  const validationSchema = Yup.object({
+    roomId: Yup.string().required("Required"),
+    roomPassword: Yup.string().required("Required"),
+  });
 
-type State = {
-  redirect: string | null;
-  roomId: string;
-  roomPassword: string;
-  loading: boolean;
-  message: string;
-};
+  const navigate = useNavigate();
 
-export default class OnLogin extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.handleLogin = this.handleLogin.bind(this);
-
-    this.state = {
-      redirect: null,
-      roomId: "",
-      roomPassword: "",
-      loading: false,
-      message: "",
-    };
-  }
-
-  // redirect to /Dashboard if the login is successful
-  // Documentation: https://legacy.reactjs.org/docs/react-component.html 
-  componentDidMount() {
-    const currentUser = authService.getCurrentUser();
-
-    if (currentUser) {
-      this.setState({ redirect: "/Dashboard" });
-    }
-  }
-
-  // componentWillUnmount(){
-  //   window.location.reload();
-  // }
-
-  validationSchema() {
-    return Yup.object().shape({
-      roomId: Yup.string().required("This field is required!"),
-      roomPassword: Yup.string().required("This field is rquuired!"),
-    });
-  }
-
-  handleLogin(formValue: { roomId: string; roomPassword: string }) {
-    const { roomId, roomPassword } = formValue;
-    this.setState({
-      message: "",
-      loading: true,
-    });
-
-    authService.login(roomId, roomPassword).then(
-      () => {
-        this.setState({
-          redirect: "/Dashboard",
-        });
-      },
-      (error) => {
-        const resMessage =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
-
-        this.setState({
-          loading: false,
-          message: resMessage,
-        });
-      }
-    );
-  }
-
-  render() {
-    if (this.state.redirect) {
-      return <Link to={this.state.redirect} />;
-    }
-
-    const { loading, message } = this.state;
-
-    const inputStyles = `mb-5 w-full rounded-lg bg-primary-300
+  const handleSubmit = async (values: any) => {
+    try {
+      const response = await axios.post("/api/login", values);
+      console.log(response.data); // Handle the response as needed
+      navigate("/dashboard"); // Redirect to /dashboard upon successful login
+    } catch (error) {
+      const errorMessage = (error as any).response?.data?.message || "An error occurred";
+      console.log(errorMessage);    }
+  };
+  const inputStyles = `mb-5 w-full rounded-lg bg-primary-300
     px-5 py-3 placeholder-white`;
 
-    const initialValues = {
-      roomId: "",
-      roomPassword: "",
-    };
-    return (
-      <section id="login" className="mx-auto w-5/6 pb-32 pt-24">
-        <div className="justtify-between mt-10 gap-8 md:flex">
+  return (
+    <div>
+      <h1>LOGIN</h1>
+      <div className="mt-10 justify-between gap-8 md:flex">
+        <motion.div
+          className="mt-10 basis-3/5 md:mt-0"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 0.5 }}
+          variants={{
+            hidden: { opacity: 0, y: 50 },
+            visible: { opacity: 1, y: 0 },
+          }}
+        >
           <Formik
             initialValues={initialValues}
-            validationSchema={this.validationSchema}
-            onSubmit={this.handleLogin}
+            validationSchema={validationSchema}
+            onSubmit={handleSubmit}
           >
             <Form>
-              <div className={inputStyles}>
-                <Field
-                  name="roomId"
-                  type="text"
-                  className="form-control"
-                  placeholder="room id"
-                />
-                <ErrorMessage
-                  name="roomId"
-                  component="div"
-                  className="alert alert-danger"
-                />
-              </div>
-              <div className={inputStyles}>
-                {/* <label htmlFor="roomPassword"> PASSWORD </label> */}
-                <Field
-                  name="roomPassword"
-                  type="password"
-                  className="form-control"
-                  placeholder="password"
-                />
-                <ErrorMessage
-                  name="roomPassword"
-                  component="div"
-                  className="alert alert-danger"
-                />
-              </div>
-              <button
-                type="submit"
-                className="mt-5 rounded-lg bg-secondary-500 px-20 py-3 transition duration-500 hover:text-white"
-                disabled={loading}
-              >
-                LOGIN
-              </button>
-              {/* Backdoor to dashboard for dev */}
-              <Link to="/dashboard">
-                <button
-                  type="submit"
-                  className="mt-5 rounded-lg bg-secondary-500 px-20 py-3 transition duration-500 hover:text-white"
-                >
-                  BYPASS
-                </button>
-              </Link>
-              {message && (
-                <div className="alert">
-                  <div
-                    className="rounded-t bg-red-500 px-4 py-2 font-bold text-white"
-                    role="alert"
-                  >
-                    {message}
+              {
+                <div>
+                  <div className={inputStyles}>
+                    <label>Room ID: </label>
+                    <Field
+                      name="roomId"
+                      type="text"
+                      className="form-control"
+                      placeholder="room id"
+                    />
+                    <ErrorMessage
+                      name="roomId"
+                      component="div"
+                      className="alert alert-danger"
+                    />
                   </div>
+
+                  <div className={inputStyles}>
+                    <label>Password: </label>
+                    <Field
+                      name="roomPassword"
+                      type="password"
+                      className="form-control"
+                      placeholder="password"
+                    />
+                    <ErrorMessage
+                      name="roomPassword"
+                      component="div"
+                      className="alert alert-danger"
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="mt-5 rounded-lg bg-secondary-500 px-20 py-3 transition duration-500 hover:text-white"
+                  >
+                    LOGIN
+                  </button>
                 </div>
-              )}
+              }
             </Form>
           </Formik>
-        </div>
-      </section>
-    );
-  }
-}
+        </motion.div>
+      </div>
+    </div>
+  );
+};
 
+export default Login;
+
+// {
+//   /* Backdoor to dashboard for dev */
+// }
+// <Link to="/dashboard">
+//   <button
+//     type="submit"
+//     className="mt-5 rounded-lg bg-secondary-500 px-20 py-3 transition duration-500 hover:text-white"
+//   >
+//     BYPASS
+//   </button>
+// </Link>;

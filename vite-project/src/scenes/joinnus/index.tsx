@@ -17,7 +17,7 @@ type Props = {
 
 type State = {
   roomId: string,
-  email: string,
+  emails: string,
   roomPassword: string,
   successful: boolean,
   message: string
@@ -30,7 +30,7 @@ export default class JoinUs extends Component<Props, State> {
 
     this.state = {
       roomId: "",
-      email: "",
+      emails: "",
       roomPassword: "",
       successful: false,
       message: ""
@@ -44,29 +44,26 @@ export default class JoinUs extends Component<Props, State> {
           "len",
           "The roomId must be between 3 and 20 characters.",
           (val: any) =>
-            val &&
-            val.toString().length >= 3 &&
-            val.toString().length <= 20
+            val && val.toString().length >= 3 && val.toString().length <= 20
         )
         .required("This field is required!"),
-      email: Yup.string()
-        .email("This is not a valid email.")
-        .required("This field is required!"),
+
       roomPassword: Yup.string()
         .test(
           "len",
           "The roomPassword must be between 6 and 40 characters.",
           (val: any) =>
-            val &&
-            val.toString().length >= 6 &&
-            val.toString().length <= 40
+            val && val.toString().length >= 6 && val.toString().length <= 40
         )
+        .required("This field is required!"),
+      emails: Yup.string()
+        .email("This is not a valid email.")
         .required("This field is required!"),
     });
   }
 
-  handleRegister(formValue: { roomId: string; email: string; roomPassword: string }) {
-    const { roomId, email, roomPassword } = formValue;
+  handleRegister(formValue: { roomId: string; roomPassword: string; emails: string;}) {
+    const { roomId, roomPassword, emails } = formValue;
 
     this.setState({
       message: "",
@@ -75,8 +72,8 @@ export default class JoinUs extends Component<Props, State> {
 
     authService.register(
       roomId,
-      email,
-      roomPassword
+      roomPassword,
+      emails,
     ).then(
       response => {
         this.setState({
@@ -110,8 +107,8 @@ export default class JoinUs extends Component<Props, State> {
 
     const initialValues = {
       roomId: "",
-      email: "",
       roomPassword: "",
+      emails: "",
     };
 
     return (
@@ -178,21 +175,6 @@ export default class JoinUs extends Component<Props, State> {
                     </div>
 
                     <div className={inputStyles}>
-                      {/* <label htmlFor="email"> EMAIL </label> */}
-                      <Field
-                        name="email"
-                        type="email"
-                        className="form-control"
-                        placeholder="email"
-                      />
-                      <ErrorMessage
-                        name="email"
-                        component="div"
-                        className="alert alert-danger"
-                      />
-                    </div>
-
-                    <div className={inputStyles}>
                       {/* <label htmlFor="roomPassword"> PASSWORD </label> */}
                       <Field
                         name="roomPassword"
@@ -206,7 +188,22 @@ export default class JoinUs extends Component<Props, State> {
                         className="alert alert-danger"
                       />
                     </div>
-
+                   
+                    <div className={inputStyles}>
+                      {/* <label htmlFor="email"> EMAIL </label> */}
+                      <Field
+                        name="emails"
+                        type="email"
+                        className="form-control"
+                        placeholder="email"
+                      />
+                      <ErrorMessage
+                        name="email"
+                        component="div"
+                        className="alert alert-danger"
+                      />
+                    </div>
+                   
                     <button
                       type="submit"
                       className="mt-5 rounded-lg bg-secondary-500 px-20 py-3 transition duration-500 hover:text-white"
@@ -214,7 +211,6 @@ export default class JoinUs extends Component<Props, State> {
                       Sign Up
                     </button>
                     {/* TODO: link submit button to /dashboard if successful */}
-
                   </div>
                 )}
 
