@@ -48,7 +48,7 @@ const Navbar = ({ isTopOfPage, selectedPage, setSelectedPage}: Props) => {
                  */}
                 <div className={`${flexBetween} gap-8`}>
                   {/* quick backdoor to Calendar */}
-                  <Link to="/onlogin">
+                  <Link to="/login">
                     <button
                       type="submit"
                       className="mt-5 rounded-lg bg-secondary-500 px-20 py-3 transition duration-500 hover:text-white"

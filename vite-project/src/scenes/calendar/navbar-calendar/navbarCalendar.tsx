@@ -1,7 +1,14 @@
 import Logo from "@/assets/Logo.png"
 import { Link } from 'react-router-dom';
+import {useContext} from 'react'
+import { UserContext } from "@/services/userContext";
 
 const NavbarCalendar = () => {
+  const userContext = useContext(UserContext)
+  const handleLogout = () => {
+    userContext.setUser(null)
+  }
+
   const flexBetween = "flex items-center justify-between";
   const navbarBackground = "bg-primary-100 drop-shadow";
   return (
@@ -20,7 +27,7 @@ const NavbarCalendar = () => {
               <div className={`${flexBetween} gap-8`}>
                 {/* Route back to the landing page */}
                 <Link to="/">
-                  <button className="rounded-md bg-secondary-500 px-10 py-2 hover:bg-primary-500 hover:text-white">
+                  <button onClick={handleLogout} className="rounded-md bg-secondary-500 px-10 py-2 hover:bg-primary-500 hover:text-white">
                     Logout
                   </button>
                 </Link>

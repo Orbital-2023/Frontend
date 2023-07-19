@@ -3,8 +3,11 @@ import * as Yup from "yup";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import {useContext} from 'react'
+import { UserContext } from "@/services/userContext";
 
 const Login = () => {
+  const userContext = useContext(UserContext)
   const initialValues = {
     roomId: "",
     roomPassword: "",
@@ -20,6 +23,11 @@ const Login = () => {
   const handleSubmit = async (values: any) => {
     try {
       const response = await axios.post("/api/login", values);
+      console.log(values)
+      userContext.setUser({
+        roomId: values.roomId,
+        roomPassword: values.roomPassword,
+      })
       console.log(response.data); // Handle the response as needed
       navigate("/dashboard"); // Redirect to /dashboard upon successful login
     } catch (error) {
@@ -99,15 +107,3 @@ const Login = () => {
 };
 
 export default Login;
-
-// {
-//   /* Backdoor to dashboard for dev */
-// }
-// <Link to="/dashboard">
-//   <button
-//     type="submit"
-//     className="mt-5 rounded-lg bg-secondary-500 px-20 py-3 transition duration-500 hover:text-white"
-//   >
-//     BYPASS
-//   </button>
-// </Link>;

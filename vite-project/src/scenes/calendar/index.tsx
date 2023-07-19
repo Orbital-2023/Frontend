@@ -77,7 +77,7 @@ const Heatmap: React.FC<HeatmapProps> = ({
           return hour.includes(hourLabel) ? total + 1 : total;
         }, 0) || 0;
 
-      console.log(`Count for ${dayLabel} ${hourLabel}:`, count); // Log the count value
+      // console.log(`Count for ${dayLabel} ${hourLabel}:`, count); // Log the count value
 
       dayAndHour.push({
         dayHour: `${dayLabel} ${hourLabel}`,

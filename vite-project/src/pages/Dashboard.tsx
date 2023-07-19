@@ -4,13 +4,13 @@ import Heatmap from "@/scenes/calendar/index.tsx";
 import { AvailabilityData } from "@/scenes/calendar/index.tsx";
 // import calendardata from "@/scenes/calendar/rawdata/segmentdata.json";
 import axios from "axios";
+import { useContext } from "react";
+import { UserContext } from "@/services/userContext";
 
 // import components
 import NavbarCalendar from "@/scenes/calendar/navbar-calendar/navbarCalendar.tsx";
 import CalendarDatePicker from "@/scenes/calendar/datepicker";
 import EmailForm from "@/scenes/calendar/fetchemail";
-
-// TODO: differentiated by emails (currently scraped, will be just populating with timings)
 
 const dayLabels: string[] = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const hourLabels: string[] = [
@@ -41,9 +41,13 @@ const hourLabels: string[] = [
 ];
 
 export default function Dashboard() {
+  const userContext = useContext(UserContext);
+  console.log(userContext.user?.roomId)
+  console.log(userContext.user?.roomPassword);
 
-  const appendEmailApiUrl = "/api/meeting/append";
   const calendarEventApiUrl = "/api/calendar/events";
+  const emailAppendApiUrl = "/api/meeting/append"; // requires {roomId, roomPassword, email}
+  const timeUpdateApiUrl = "/api/meeting/timeupdate"; // requires {roomId, startDate, endDate}
   const [data, setData] = useState<AvailabilityData[]>([]);
 
   // console.log("Calendar data", calendardata)
@@ -75,8 +79,8 @@ export default function Dashboard() {
             xAxisLabels={dayLabels}
             yAxisLabels={hourLabels}
           />
-          <CalendarDatePicker></CalendarDatePicker>
-          <EmailForm apiUrl={appendEmailApiUrl}></EmailForm>
+          <CalendarDatePicker apiUrl={timeUpdateApiUrl}></CalendarDatePicker>
+          <EmailForm apiUrl={emailAppendApiUrl}></EmailForm>
         </div>
       </div>
     </>
