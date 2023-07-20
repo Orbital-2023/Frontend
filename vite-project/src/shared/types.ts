@@ -21,3 +21,9 @@ export default interface IUser {
   email?: string,
   roomPassword?: string,
 }
+
+export interface CardData {
+  title: string;
+  content: string;
+  imageUrl: string;
+}

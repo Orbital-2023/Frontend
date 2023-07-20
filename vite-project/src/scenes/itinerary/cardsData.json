@@ -1,0 +1,52 @@
+[
+  {
+    "title": "Card 1",
+    "content": "This is the content for Card 1. It can contain any information you want to display on the card.",
+    "imageUrl": "https://via.placeholder.com/300x200?text=Card1"
+  },
+  {
+    "title": "Card 2",
+    "content": "This is the content for Card 2. You can customize it as per your requirements.",
+    "imageUrl": "https://via.placeholder.com/300x200?text=Card2"
+  },
+  {
+    "title": "Card 3",
+    "content": "This is the content for Card 3. Feel free to add more cards or modify existing ones.",
+    "imageUrl": "https://via.placeholder.com/300x200?text=Card3"
+  },
+  {
+    "title": "Card 4",
+    "content": "This is the content for Card 4. You can use any content here to display information.",
+    "imageUrl": "https://via.placeholder.com/300x200?text=Card4"
+  },
+  {
+    "title": "Card 5",
+    "content": "This is the content for Card 5. Customize the content and images as you like.",
+    "imageUrl": "https://via.placeholder.com/300x200?text=Card5"
+  },
+  {
+    "title": "Card 6",
+    "content": "This is the content for Card 6. Feel free to replace the content and images.",
+    "imageUrl": "https://via.placeholder.com/300x200?text=Card6"
+  },
+  {
+    "title": "Card 7",
+    "content": "This is the content for Card 7. You can add more cards or remove any if needed.",
+    "imageUrl": "https://via.placeholder.com/300x200?text=Card7"
+  },
+  {
+    "title": "Card 8",
+    "content": "This is the content for Card 8. Customize the cards according to your requirements.",
+    "imageUrl": "https://via.placeholder.com/300x200?text=Card8"
+  },
+  {
+    "title": "Card 9",
+    "content": "This is the content for Card 9. You can make the cards more dynamic with real data.",
+    "imageUrl": "https://via.placeholder.com/300x200?text=Card9"
+  },
+  {
+    "title": "Card 10",
+    "content": "This is the content for Card 10. Make changes to suit your specific use case.",
+    "imageUrl": "https://via.placeholder.com/300x200?text=Card10"
+  }
+]

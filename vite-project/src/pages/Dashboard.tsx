@@ -11,6 +11,7 @@ import { UserContext } from "@/services/userContext";
 import NavbarCalendar from "@/scenes/calendar/navbar-calendar/navbarCalendar.tsx";
 import CalendarDatePicker from "@/scenes/calendar/datepicker";
 import EmailForm from "@/scenes/calendar/fetchemail";
+import Itinerary from "@/scenes/itinerary";
 
 const dayLabels: string[] = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const hourLabels: string[] = [
@@ -70,17 +71,26 @@ export default function Dashboard() {
 
   return (
     <>
-      <div className="space-y-15 flex flex-col">
+      <div>
         <NavbarCalendar></NavbarCalendar>
-        <div className="container">
-          <Heatmap
-            orientation="vertical"
-            data={data}
-            xAxisLabels={dayLabels}
-            yAxisLabels={hourLabels}
-          />
-          <CalendarDatePicker apiUrl={timeUpdateApiUrl}></CalendarDatePicker>
-          <EmailForm apiUrl={emailAppendApiUrl}></EmailForm>
+        <div className="page">
+          <div className="container">
+            <div className="flex justify-center">
+              <Heatmap
+                orientation="vertical"
+                data={data}
+                xAxisLabels={dayLabels}
+                yAxisLabels={hourLabels}
+              />
+            </div>
+            <CalendarDatePicker apiUrl={timeUpdateApiUrl}></CalendarDatePicker>
+            <EmailForm apiUrl={emailAppendApiUrl}></EmailForm>
+          </div>
+          <div className="container">
+            <div className="container flex justify-center">
+              <Itinerary></Itinerary>
+            </div>
+          </div>
         </div>
       </div>
     </>

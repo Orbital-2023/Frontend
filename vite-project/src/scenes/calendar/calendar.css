@@ -13,14 +13,21 @@ body,
   width: 100%;
   font-family: "DM Sans", sans-serif;
   @apply text-gray-500;
+  
 }
 
 * {
   box-sizing: border-box;
 }
 
+.page{
+display: grid;
+  grid-template-columns: 1fr 1fr; /* Two columns with equal width */
+  gap: 20px; /* Add some spacing between the containers */
+}
+
 .container {
-  margin: 50px auto;
+  margin: 50px auto 30px 10%;
   max-width: 900px;
 }
 
