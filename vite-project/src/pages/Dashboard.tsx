@@ -45,7 +45,7 @@ const hourLabels: string[] = [
 // Define the Dashboard component
 export default function Dashboard() {
   // API URLs for appending email and updating meeting time
-  const API_BASE_URL = process.env.API_BASE_URL || "/api";
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "/api";
   const emailAppendApiUrl = `${API_BASE_URL}/api/meeting/append`; // requires {roomId, roomPassword, email}
   const timeUpdateApiUrl = `${API_BASE_URL}/api/meeting/timeupdate`; // requires {roomId, startDate, endDate}
 

@@ -31,12 +31,12 @@ const Login = () => {
   };
 
   // Function to reload the page
-  const reloadPage = () => {
-    window.location.reload();
-  };
+  // const reloadPage = () => {
+  //   window.location.reload();
+  // };
 
   const navigate = useNavigate();
-  const API_BASE_URL = process.env.API_BASE_URL || "/api";
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "/api";
 
   const handleSubmit = async (values: any) => {
     try {
@@ -74,7 +74,7 @@ const Login = () => {
       setErrorMessage(errorMessage);
       console.log(errorMessage);
       // Reload the page after showing the error for a few seconds (e.g., 5 seconds)
-      setTimeout(reloadPage, 3000);
+      // setTimeout(reloadPage, 3000);
     }
   };
   const inputStyles = `mb-5 w-full rounded-lg bg-primary-300
