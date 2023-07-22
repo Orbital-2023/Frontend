@@ -2,8 +2,9 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { AvailabilityData } from "."; // Importing the AvailabilityData type
+const API_BASE_URL = process.env.API_BASE_URL || "/api";
 
-const apiUrl = "/api/calendar/events"; // URL for fetching event data
+const apiUrl = `${API_BASE_URL}/api/calendar/events`; // URL for fetching event data
 
 // Custom hook useEventData
 const useEventData = (roomId_value: string) => {

@@ -36,6 +36,7 @@ const Login = () => {
   };
 
   const navigate = useNavigate();
+  const API_BASE_URL = process.env.API_BASE_URL || "/api";
 
   const handleSubmit = async (values: any) => {
     try {
@@ -44,7 +45,7 @@ const Login = () => {
       setErrorMessage("");
 
       const response = await axios.post(
-        "/api/login",
+        `${API_BASE_URL}/api/login`,
         values
       );
       console.log(values);

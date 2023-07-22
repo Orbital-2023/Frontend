@@ -45,8 +45,9 @@ const hourLabels: string[] = [
 // Define the Dashboard component
 export default function Dashboard() {
   // API URLs for appending email and updating meeting time
-  const emailAppendApiUrl = "/api/meeting/append"; // requires {roomId, roomPassword, email}
-  const timeUpdateApiUrl = "/api/meeting/timeupdate"; // requires {roomId, startDate, endDate}
+  const API_BASE_URL = process.env.API_BASE_URL || "/api";
+  const emailAppendApiUrl = `${API_BASE_URL}/api/meeting/append`; // requires {roomId, roomPassword, email}
+  const timeUpdateApiUrl = `${API_BASE_URL}/api/meeting/timeupdate`; // requires {roomId, startDate, endDate}
 
   // Access the user context
   const userContext = useContext(UserContext);
