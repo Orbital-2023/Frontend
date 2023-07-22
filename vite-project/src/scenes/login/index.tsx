@@ -52,7 +52,7 @@ const Login = () => {
       setLoading(false);
       console.log(response.data); // Handle the response as needed
       // Add a delay of 3 seconds to help with the backend coming back online
-      await addDelay(3000);
+      // await addDelay(3000);
 
       navigate("/dashboard"); // Redirect to /dashboard upon successful login
     } catch (error) {

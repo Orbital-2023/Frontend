@@ -1,11 +1,14 @@
-// Redirected from Landing Page
-// Once login successful, direct to Dashboard Page
-
+// Import the OnLogin component from the "login" scene
 import OnLogin from "@/scenes/login";
-export default function LoginPage(){
-    return(
-        <div className="app bg-gray-20">
-            <OnLogin></OnLogin>
-        </div>
-    );
+
+// Define the LoginPage component
+export default function LoginPage() {
+  // Render the LoginPage component
+  return (
+    // Apply a background color to the entire app
+    <div className="app bg-gray-20">
+      {/* Render the OnLogin component */}
+      <OnLogin></OnLogin>
+    </div>
+  );
 }

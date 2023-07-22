@@ -1,4 +1,4 @@
-// linked with register api
+// TODO: fix known bug that form disappears after successful submission. Something to do with preventDefault but deals with updating states
 
 // import { Link } from 'react-router-dom';
 import { Component } from "react";
@@ -80,6 +80,7 @@ export default class JoinUs extends Component<Props, State> {
           message: response.data.message,
           successful: true
         });
+        console.log(response)
       },
       error => {
         const resMessage =
@@ -93,6 +94,7 @@ export default class JoinUs extends Component<Props, State> {
           successful: false,
           message: resMessage
         });
+        console.log(error);
       }
     );
   }
@@ -160,7 +162,6 @@ export default class JoinUs extends Component<Props, State> {
                 {!successful && (
                   <div>
                     <div className={inputStyles}>
-                      {/* <label htmlFor="roomId"> ROOM ID </label> */}
                       <Field
                         name="roomId"
                         type="text"
@@ -175,7 +176,6 @@ export default class JoinUs extends Component<Props, State> {
                     </div>
 
                     <div className={inputStyles}>
-                      {/* <label htmlFor="roomPassword"> PASSWORD </label> */}
                       <Field
                         name="roomPassword"
                         type="password"
@@ -210,7 +210,6 @@ export default class JoinUs extends Component<Props, State> {
                     >
                       Sign Up
                     </button>
-                    {/* TODO: link submit button to /dashboard if successful */}
                   </div>
                 )}
 

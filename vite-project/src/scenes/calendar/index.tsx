@@ -1,32 +1,8 @@
-// import { useRef } from "react";
 import "./calendar.css";
 
 const generateBackgroundColor = (count: number) => {
   return `hsl(196deg 36% ${count > 0 ? 95 - count * 5 : 95}%)`;
 };
-
-// function generateLegend(data: number[]) {
-//   const deduped = [...new Set(data)];
-//   const minValue = Math.min(...deduped);
-//   const maxValue = Math.max(...deduped);
-//   const minColor = generateBackgroundColor(minValue);
-//   const maxColor = generateBackgroundColor(maxValue);
-
-//   return (
-//     <div className="legend">
-//       <div
-//         className="cell"
-//         style={{
-//           background: `linear-gradient(90deg, ${minColor} 0%, ${maxColor} 100%)`
-//         }}
-//       />
-//       <div className="labels">
-//         <span className="label">{minValue}</span>
-//         <span className="label">{maxValue}</span>
-//       </div>
-//     </div>
-//   );
-// }
 
 export interface Schedule {
   [day: string]: string[];
@@ -53,16 +29,15 @@ const Heatmap: React.FC<HeatmapProps> = ({
   // const minMaxCount = useRef<number[]>([]);
   const formattedData: Schedule = {};
 
-  data.forEach((item: AvailabilityData) => {
-    Object.entries(item.availability).forEach(([day, hours]) => {
-      if (!formattedData[day]) {
-        formattedData[day] = [];
-      }
-      formattedData[day].push(...hours);
-    });
+data.forEach((item: AvailabilityData) => {
+  Object.entries(item.availability).forEach(([day, hours]) => {
+    if (!formattedData[day]) {
+      formattedData[day] = [];
+    }
+    formattedData[day].push(...hours.map((hour) => hour.replace(/\s+/g, "")));
   });
-
-  // console.log("Formatted Data:", formattedData); // Log the formattedData object
+});
+  console.log("Formatted Data:", formattedData); // Log the formattedData object
 
   const gridCells: {
     [key: string]: { hours: { dayHour: string; count: number }[] };
@@ -70,13 +45,12 @@ const Heatmap: React.FC<HeatmapProps> = ({
 
   xAxisLabels.forEach((dayLabel) => {
     const dayAndHour: { dayHour: string; count: number }[] = [];
-
     yAxisLabels.forEach((hourLabel) => {
+      // console.log(dayLabel, formattedData[dayLabel])
       const count =
         formattedData[dayLabel]?.reduce((total: number, hour: string) => {
           return hour.includes(hourLabel) ? total + 1 : total;
         }, 0) || 0;
-
       // console.log(`Count for ${dayLabel} ${hourLabel}:`, count); // Log the count value
 
       dayAndHour.push({
@@ -90,7 +64,7 @@ const Heatmap: React.FC<HeatmapProps> = ({
     };
   });
 
-  // console.log("Grid Cells:", gridCells); // Log the gridCells object
+  console.log("Grid Cells:", gridCells); // Log the gridCells object
   return (
     <div className="container">
       <div className={`heatmap ${orientation}`}>
@@ -120,7 +94,6 @@ const Heatmap: React.FC<HeatmapProps> = ({
           ))}
         </div>
       </div>
-      {/* {generateLegend(minMaxCount.current)} */}
     </div>
   );
 };
