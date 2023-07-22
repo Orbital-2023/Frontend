@@ -11,6 +11,7 @@ const Login = () => {
   const initialValues = {
     roomId: "",
     roomPassword: "",
+    emails: [],
   };
 
   const validationSchema = Yup.object({
@@ -35,15 +36,23 @@ const Login = () => {
 
       const response = await axios.post("/api/login", values);
       console.log(values);
+      // Convert the emails string into an array of emails
+      const emailsArray = response.data.emails
+        .split(",")
+        .map((email: string) => email.trim());
+
+      console.log(emailsArray)
+
       userContext.setUser({
         roomId: values.roomId,
         roomPassword: values.roomPassword,
+        emails: emailsArray,
       });
 
       setLoading(false);
       console.log(response.data); // Handle the response as needed
       // Add a delay of 3 seconds to help with the backend coming back online
-      await addDelay(3000); 
+      await addDelay(3000);
 
       navigate("/dashboard"); // Redirect to /dashboard upon successful login
     } catch (error) {

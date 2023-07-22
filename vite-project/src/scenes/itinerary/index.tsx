@@ -1,4 +1,3 @@
-// src/App.tsx
 import React, { useState, useEffect } from "react";
 import Card from "./card.tsx";
 import cardData from "./cardsData.json";

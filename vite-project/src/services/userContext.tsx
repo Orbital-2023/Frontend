@@ -3,7 +3,7 @@ import React, {useState, createContext} from 'react'
 export type AuthUser = {
     roomId: string;
     roomPassword: string;
-    
+    emails: string[];
 }
 
 type UserContextType = {

@@ -1,9 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import "@/scenes/calendar/calendar.css";
 import Heatmap from "@/scenes/calendar/index.tsx";
-import { AvailabilityData } from "@/scenes/calendar/index.tsx";
 // import calendardata from "@/scenes/calendar/rawdata/segmentdata.json";
-import axios from "axios";
 import { UserContext } from "@/services/userContext";
 import useEventData from "@/scenes/calendar/useEventData";
 
@@ -12,6 +10,7 @@ import NavbarCalendar from "@/scenes/calendar/navbar-calendar/navbarCalendar.tsx
 import CalendarDatePicker from "@/scenes/calendar/datepicker";
 import EmailForm from "@/scenes/calendar/fetchemail";
 import Itinerary from "@/scenes/itinerary";
+import DisplayEmails from "@/scenes/calendar/display-email/displayemail";
 
 
 const dayLabels: string[] = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -43,28 +42,23 @@ const hourLabels: string[] = [
 ];
 
 export default function Dashboard() {
-  // const calendarEventApiUrl = "/api/calendar/events";
   const emailAppendApiUrl = "/api/meeting/append"; // requires {roomId, roomPassword, email}
   const timeUpdateApiUrl = "/api/meeting/timeupdate"; // requires {roomId, startDate, endDate}
 
   const userContext = useContext(UserContext);
+  console.log(userContext.user?.roomId);
+  console.log(userContext.user?.roomPassword);
+  
   const roomId = userContext.user?.roomId;
   // If roomId is undefined, set it to an empty string
   const validRoomId = roomId || "";
   const { data, loading, fetchData } = useEventData(validRoomId);
 
-  console.log(userContext.user?.roomId);
-  console.log(userContext.user?.roomPassword);
 
   // Function to handle the reload button click
   const handleReloadClick = () => {
     fetchData();
   };
-
-  // console.log("Calendar data", calendardata)
-  // useEffect(() => {
-  //   setData(calendardata as AvailabilityData[]);
-  // }, []);
 
   return (
     <>
@@ -89,6 +83,9 @@ export default function Dashboard() {
             </div>
           </div>
           <div className="container">
+            <div className="container flex justify-center">
+              <DisplayEmails></DisplayEmails>
+            </div>
             <div className="container flex justify-center">
               <Itinerary></Itinerary>
             </div>

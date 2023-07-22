@@ -1,3 +1,5 @@
+// Check with Yunchao if this is a back or frontend issue
+
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { AvailabilityData } from ".";
@@ -31,7 +33,7 @@ const useEventData = (roomId: string) => {
   useEffect(() => {
     fetchData();
   }, [roomId]); // Add roomId to the dependency array, so it fetches data whenever roomId changes
-  
+
   return {
     data,
     loading,
