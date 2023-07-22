@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import axios from "axios";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
@@ -14,7 +14,6 @@ const EmailForm: React.FC<EmailFormProps> = ({ apiUrl }) => {
   const roomPassword = userContext.user?.roomPassword;
   // console.log(userContext.user?.roomId);
   // console.log(userContext.user?.roomPassword);
-  const [email, setEmail] = useState("")
 
   const handleSubmit = async(
     values: { email: string },
