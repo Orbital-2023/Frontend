@@ -44,7 +44,7 @@ const Login = () => {
       setErrorMessage("");
 
       const response = await axios.post(
-        "https://blueberry-production.up.railway.app/api/login",
+        "/api/login",
         values
       );
       console.log(values);
