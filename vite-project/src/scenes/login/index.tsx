@@ -43,7 +43,10 @@ const Login = () => {
       setLoading(true);
       setErrorMessage("");
 
-      const response = await axios.post("/api/login", values);
+      const response = await axios.post(
+        "https://blueberry-production.up.railway.app/api/login",
+        values
+      );
       console.log(values);
       // Convert the emails string into an array of emails
       const emailsArray = response.data.emails
