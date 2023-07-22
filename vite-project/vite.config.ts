@@ -6,7 +6,8 @@ import path from 'path'
 export default defineConfig({
   server: {
     proxy: {
-      '/api': 'https://blueberry-production.up.railway.app'
+      // '/api': 'https://blueberry-production.up.railway.app'
+      '/api': 'http://localhost:4000'
     },
   },
   plugins: [react()],

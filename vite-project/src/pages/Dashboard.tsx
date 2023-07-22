@@ -1,17 +1,17 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import "@/scenes/calendar/calendar.css";
 import Heatmap from "@/scenes/calendar/index.tsx";
-import { AvailabilityData } from "@/scenes/calendar/index.tsx";
 // import calendardata from "@/scenes/calendar/rawdata/segmentdata.json";
-import axios from "axios";
-import { useContext } from "react";
 import { UserContext } from "@/services/userContext";
+import useEventData from "@/scenes/calendar/useEventData";
 
 // import components
 import NavbarCalendar from "@/scenes/calendar/navbar-calendar/navbarCalendar.tsx";
 import CalendarDatePicker from "@/scenes/calendar/datepicker";
 import EmailForm from "@/scenes/calendar/fetchemail";
 import Itinerary from "@/scenes/itinerary";
+import DisplayEmails from "@/scenes/calendar/display-email/displayemail";
+
 
 const dayLabels: string[] = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const hourLabels: string[] = [
@@ -42,31 +42,22 @@ const hourLabels: string[] = [
 ];
 
 export default function Dashboard() {
-  const userContext = useContext(UserContext);
-  console.log(userContext.user?.roomId)
-  console.log(userContext.user?.roomPassword);
-
-  const calendarEventApiUrl = "/api/calendar/events";
   const emailAppendApiUrl = "/api/meeting/append"; // requires {roomId, roomPassword, email}
   const timeUpdateApiUrl = "/api/meeting/timeupdate"; // requires {roomId, startDate, endDate}
-  const [data, setData] = useState<AvailabilityData[]>([]);
 
-  // console.log("Calendar data", calendardata)
-  // useEffect(() => {
-  //   setData(calendardata as AvailabilityData[]);
-  // }, []);
+  const userContext = useContext(UserContext);
+  console.log(userContext.user?.roomId);
+  console.log(userContext.user?.roomPassword);
+  
+  const roomId = userContext.user?.roomId;
+  // If roomId is undefined, set it to an empty string
+  const validRoomId = roomId || "";
+  const { data, loading, fetchData } = useEventData(validRoomId);
 
-  useEffect(() => {
+
+  // Function to handle the reload button click
+  const handleReloadClick = () => {
     fetchData();
-  }, []);
-
-  const fetchData = async () => {
-    try {
-      const response = await axios.get(calendarEventApiUrl);
-      setData(response.data as AvailabilityData[]);
-    } catch (error) {
-      console.log("Error fetching data:", error);
-    }
   };
 
   return (
@@ -85,8 +76,16 @@ export default function Dashboard() {
             </div>
             <CalendarDatePicker apiUrl={timeUpdateApiUrl}></CalendarDatePicker>
             <EmailForm apiUrl={emailAppendApiUrl}></EmailForm>
+            <div className="reload-button-container">
+              <button onClick={handleReloadClick} disabled={loading}>
+                {loading ? "Loading..." : "Reload Data"}
+              </button>
+            </div>
           </div>
           <div className="container">
+            <div className="container flex justify-center">
+              <DisplayEmails></DisplayEmails>
+            </div>
             <div className="container flex justify-center">
               <Itinerary></Itinerary>
             </div>

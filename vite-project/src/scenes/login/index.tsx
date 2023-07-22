@@ -3,7 +3,7 @@ import * as Yup from "yup";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import {useContext} from 'react'
+import {useContext, useState} from 'react'
 import { UserContext } from "@/services/userContext";
 
 const Login = () => {
@@ -11,24 +11,49 @@ const Login = () => {
   const initialValues = {
     roomId: "",
     roomPassword: "",
+    emails: [],
   };
 
   const validationSchema = Yup.object({
     roomId: Yup.string().required("Required"),
     roomPassword: Yup.string().required("Required"),
   });
+  
+  // State to track the loading state
+  const [loading, setLoading] = useState(false);
+
+  // Function to simulate the delay
+  const addDelay = async (ms: number) => {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  };
 
   const navigate = useNavigate();
 
   const handleSubmit = async (values: any) => {
     try {
+      // Start loading state
+      setLoading(true);
+
       const response = await axios.post("/api/login", values);
-      console.log(values)
+      console.log(values);
+      // Convert the emails string into an array of emails
+      const emailsArray = response.data.emails
+        .split(",")
+        .map((email: string) => email.trim());
+
+      console.log(emailsArray)
+
       userContext.setUser({
         roomId: values.roomId,
         roomPassword: values.roomPassword,
-      })
+        emails: emailsArray,
+      });
+
+      setLoading(false);
       console.log(response.data); // Handle the response as needed
+      // Add a delay of 3 seconds to help with the backend coming back online
+      await addDelay(3000);
+
       navigate("/dashboard"); // Redirect to /dashboard upon successful login
     } catch (error) {
       const errorMessage = (error as any).response?.data?.message || "An error occurred";

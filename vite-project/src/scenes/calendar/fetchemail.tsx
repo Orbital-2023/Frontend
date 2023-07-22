@@ -29,10 +29,21 @@ const EmailForm: React.FC<EmailFormProps> = ({ apiUrl }) => {
 
     try {
       const response = await axios.post(apiUrl, payload);
-      // Handle success response here
       // console.log(response.data);
-      if(response.status == 200){
-        console.log("Request succeeded!")
+
+      // update the list of email to userContext
+      const emailsArray = response.data.emails
+        .split(",")
+        .map((email: string) => email.trim());
+      console.log(emailsArray);
+      userContext.setUser({
+        roomId: response.data.roomId,
+        roomPassword: response.data.roomPassword,
+        emails: emailsArray,
+      });
+      
+      if (response.status == 200) {
+        console.log("Request succeeded!");
       }
     } catch (error) {
       // Handle error here
