@@ -1,5 +1,5 @@
 // Import the OnLogin component from the "login" scene
-import OnLogin from "@/scenes/login";
+import Login from "@/scenes/login";
 
 // Define the LoginPage component
 export default function LoginPage() {
@@ -8,7 +8,7 @@ export default function LoginPage() {
     // Apply a background color to the entire app
     <div className="app bg-gray-20">
       {/* Render the OnLogin component */}
-      <OnLogin></OnLogin>
+      <Login></Login>
     </div>
   );
 }

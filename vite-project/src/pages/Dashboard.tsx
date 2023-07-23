@@ -45,14 +45,12 @@ const hourLabels: string[] = [
 // Define the Dashboard component
 export default function Dashboard() {
   // API URLs for appending email and updating meeting time
-  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "/api";
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
   const emailAppendApiUrl = `${API_BASE_URL}/api/meeting/append`; // requires {roomId, roomPassword, email}
   const timeUpdateApiUrl = `${API_BASE_URL}/api/meeting/timeupdate`; // requires {roomId, startDate, endDate}
 
   // Access the user context
   const userContext = useContext(UserContext);
-  console.log(userContext.user?.roomId);
-  console.log(userContext.user?.roomPassword);
 
   // Get roomId from the user context, if available, or set it to an empty string
   const roomId = userContext.user?.roomId;
@@ -88,7 +86,9 @@ export default function Dashboard() {
             <EmailForm apiUrl={emailAppendApiUrl}></EmailForm>
             <div className="reload-button-container">
               {/* Button to reload data with a loading state */}
-              <button onClick={handleReloadClick} disabled={loading}>
+              <br></br>
+              <h2>Do reload each time date or email is appended!</h2>
+              <button className="mt-5 rounded-lg bg-secondary-500 px-20 py-3 transition duration-500 hover:text-white" onClick={handleReloadClick} disabled={loading}>
                 {loading ? "Loading..." : "Reload Data"}
               </button>
             </div>

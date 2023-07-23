@@ -10,7 +10,6 @@ const Login = () => {
   const userContext = useContext(UserContext);
   // State to track the error message
   const [errorMessage, setErrorMessage] = useState("");
-
   const initialValues = {
     roomId: "",
     roomPassword: "",
@@ -36,7 +35,7 @@ const Login = () => {
   };
 
   const navigate = useNavigate();
-  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "/api";
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 
   const handleSubmit = async (values: any) => {
     try {
@@ -104,14 +103,16 @@ const Login = () => {
               validationSchema={validationSchema}
               onSubmit={handleSubmit}
             >
-              <Form>
+              <Form data-testid="login-form">
                 {
                   <div>
                     <div className={inputStyles}>
-                      <label>Room ID: </label>
+                      <label htmlFor="roomId">Room ID: </label>
                       <Field
                         name="roomId"
                         type="text"
+                        id="roomId"
+                        data-testid="room-id-input" // Add the 'data-testid' attribute to the input field
                         className="form-control"
                         placeholder="room id"
                       />
@@ -123,10 +124,12 @@ const Login = () => {
                     </div>
 
                     <div className={inputStyles}>
-                      <label>Password: </label>
+                      <label htmlFor="roomPassword">Password: </label>
                       <Field
                         name="roomPassword"
                         type="password"
+                        id="roomPassword"
+                        data-testid="password-input" // Add the 'data-testid' attribute to the input field
                         className="form-control"
                         placeholder="password"
                       />
@@ -140,6 +143,7 @@ const Login = () => {
                     <button
                       type="submit"
                       className="mt-5 rounded-lg bg-secondary-500 px-20 py-3 transition duration-500 hover:text-white"
+                      data-testid="login-button" // Add the 'data-testid' attribute to the login button
                     >
                       LOGIN
                     </button>
