@@ -12,13 +12,10 @@ const useEventData = (roomId_value: string) => {
   const [data, setData] = useState<AvailabilityData[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
-  console.log("inside useEventData.ts"); // Log to indicate when this hook is executed
-
   // Payload to be sent in the API request
   const payload = {
     roomId: roomId_value?.toString(), // Convert roomId_value to string, if available
   };
-  console.log(payload); // Log the payload for debugging purposes
 
   // fetchData function to make the API request and update the data and loading state
   const fetchData = async () => {
@@ -26,11 +23,11 @@ const useEventData = (roomId_value: string) => {
     try {
       // Make a POST request to the API with the payload
       const response = await axios.post(apiUrl, payload);
-      console.log("post successful", response.data); // Log the successful response data
+      // console.log("post successful", response.data); // Log the successful response data
       setData(response.data); // Update the data state with the received data
       setLoading(false); // Set loading state to false after data is fetched
     } catch (error) {
-      console.log("Error fetching data:", error); // Log any errors that occur during the request
+      // console.log("Error fetching data:", error); // Log any errors that occur during the request
       setLoading(false); 
     }
   };

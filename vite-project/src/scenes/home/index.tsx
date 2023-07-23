@@ -74,9 +74,6 @@ const Home = ({ setSelectedPage }: Props) => {
                 LOGIN
               </button>
             </Link>
-            {/* <ActionButton setSelectedPage={setSelectedPage}>
-              Log In
-            </ActionButton>  */}
           </motion.div>
         </div>
 

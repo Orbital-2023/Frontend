@@ -21,7 +21,6 @@ const EmailForm: React.FC<EmailFormProps> = ({ apiUrl }) => {
     values: { email: string },
     { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
   ) => {
-    console.log(values);
 
     // Prepare the payload to be sent in the API request
     const payload = {
@@ -29,7 +28,6 @@ const EmailForm: React.FC<EmailFormProps> = ({ apiUrl }) => {
       roomPassword: roomPassword?.toString(),
       email: values.email.toString(),
     };
-    console.log(payload);
 
     try {
       // Make a POST request to the specified API with the payload
@@ -39,7 +37,6 @@ const EmailForm: React.FC<EmailFormProps> = ({ apiUrl }) => {
       const emailsArray = response.data.emails
         .split(",")
         .map((email: string) => email.trim());
-      console.log(emailsArray);
 
       // Set the user context with the received data from the API response
       userContext.setUser({
@@ -49,11 +46,11 @@ const EmailForm: React.FC<EmailFormProps> = ({ apiUrl }) => {
       });
 
       if (response.status === 200) {
-        console.log("Request succeeded!");
+        // console.log("Request succeeded!");
       }
     } catch (error) {
       // Handle error here
-      console.error(error);
+      // console.error(error);
     } finally {
       // Set submitting state to false after the request is completed
       setSubmitting(false);

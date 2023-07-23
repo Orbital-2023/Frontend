@@ -1,42 +1,46 @@
 // TODO: fix known bug that form disappears after successful submission. Something to do with preventDefault but deals with updating states
 
+// Import necessary dependencies and components
 // import { Link } from 'react-router-dom';
 import { Component } from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
-
 import { SelectedPage } from "@/shared/types";
 import { motion } from "framer-motion";
 import HText from "@/shared/HText";
-
 import authService from "@/services/auth.service";
 
+// Define the prop types for the component
 type Props = {
   setSelectedPage: (value: SelectedPage) => void;
 };
 
+// Define the component state interface
 type State = {
-  roomId: string,
-  emails: string,
-  roomPassword: string,
-  successful: boolean,
-  message: string
+  roomId: string;
+  emails: string;
+  roomPassword: string;
+  successful: boolean;
+  message: string;
 };
 
+// The main component class
 export default class JoinUs extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.handleRegister = this.handleRegister.bind(this);
 
+    // Initial state of the component
     this.state = {
       roomId: "",
       emails: "",
       roomPassword: "",
       successful: false,
-      message: ""
+      message: "",
     };
   }
 
+  // Define the validation schema for the form fields
   validationSchema() {
     return Yup.object().shape({
       roomId: Yup.string()
@@ -62,27 +66,31 @@ export default class JoinUs extends Component<Props, State> {
     });
   }
 
-  handleRegister(formValue: { roomId: string; roomPassword: string; emails: string;}) {
+  // Function to handle form submission
+  handleRegister(formValue: {
+    roomId: string;
+    roomPassword: string;
+    emails: string;
+  }) {
     const { roomId, roomPassword, emails } = formValue;
 
+    // Reset message and successful flags before the submission
     this.setState({
       message: "",
-      successful: false
+      successful: false,
     });
 
-    authService.register(
-      roomId,
-      roomPassword,
-      emails,
-    ).then(
-      response => {
+    // Call the authentication service to register the user
+    authService.register(roomId, roomPassword, emails).then(
+      (response) => {
+        // On successful response, update the message and set successful flag to true
         this.setState({
           message: response.data.message,
-          successful: true
+          successful: true,
         });
-        console.log(response)
       },
-      error => {
+      (error) => {
+        // On error response, set successful flag to false and update the error message
         const resMessage =
           (error.response &&
             error.response.data &&
@@ -92,9 +100,8 @@ export default class JoinUs extends Component<Props, State> {
 
         this.setState({
           successful: false,
-          message: resMessage
+          message: resMessage,
         });
-        console.log(error);
       }
     );
   }
@@ -104,9 +111,11 @@ export default class JoinUs extends Component<Props, State> {
 
     const { setSelectedPage } = this.props;
 
+    // Styles for the input fields
     const inputStyles = `mb-5 w-full rounded-lg bg-primary-300
     px-5 py-3 placeholder-white`;
 
+    // Initial values for the form fields
     const initialValues = {
       roomId: "",
       roomPassword: "",
@@ -153,12 +162,14 @@ export default class JoinUs extends Component<Props, State> {
               visible: { opacity: 1, y: 0 },
             }}
           >
+            {/* Formik component for handling form state and validation */}
             <Formik
               initialValues={initialValues}
               validationSchema={this.validationSchema}
               onSubmit={this.handleRegister}
             >
               <Form>
+                {/* Render the form fields and error messages */}
                 {!successful && (
                   <div>
                     <div className={inputStyles}>
@@ -188,9 +199,8 @@ export default class JoinUs extends Component<Props, State> {
                         className="alert alert-danger"
                       />
                     </div>
-                   
+
                     <div className={inputStyles}>
-                      {/* <label htmlFor="email"> EMAIL </label> */}
                       <Field
                         name="emails"
                         type="email"
@@ -203,7 +213,7 @@ export default class JoinUs extends Component<Props, State> {
                         className="alert alert-danger"
                       />
                     </div>
-                   
+
                     <button
                       type="submit"
                       className="mt-5 rounded-lg bg-secondary-500 px-20 py-3 transition duration-500 hover:text-white"
@@ -213,6 +223,7 @@ export default class JoinUs extends Component<Props, State> {
                   </div>
                 )}
 
+                {/* Render the success or error message */}
                 {message && (
                   <div className={inputStyles}>
                     <div

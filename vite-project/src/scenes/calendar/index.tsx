@@ -37,7 +37,7 @@ data.forEach((item: AvailabilityData) => {
     formattedData[day].push(...hours.map((hour) => hour.replace(/\s+/g, "")));
   });
 });
-  console.log("Formatted Data:", formattedData); // Log the formattedData object
+  // console.log("Formatted Data:", formattedData); // Log the formattedData object
 
   const gridCells: {
     [key: string]: { hours: { dayHour: string; count: number }[] };
@@ -64,7 +64,7 @@ data.forEach((item: AvailabilityData) => {
     };
   });
 
-  console.log("Grid Cells:", gridCells); // Log the gridCells object
+  // console.log("Grid Cells:", gridCells); // Log the gridCells object
   return (
     <div className="container">
       <div className={`heatmap ${orientation}`}>
