@@ -1,5 +1,5 @@
 // Import necessary modules and components
-import Logo from "@/assets/Logo.png"; // Import the Logo image from assets
+import CalendarLogo from "@/assets/CalendarLogo.png";
 import { Link } from "react-router-dom"; // Import the Link component from react-router-dom
 import { useContext } from "react"; // Import the useContext hook from react
 import { UserContext } from "@/services/userContext"; // Import the UserContext
@@ -29,7 +29,7 @@ const NavbarCalendar = () => {
           <div className={`${flexBetween} w-full gap-16`}>
             {/* LEFT SIDE */}
             {/* Display the logo image */}
-            <img alt="logo" src={Logo} />
+            <img alt="logo" src={CalendarLogo} />
             {/* RIGHT SIDE */}
             <div className={`${flexBetween} w-full`}>
               <div className={`${flexBetween} gap-8 text-sm`}>
